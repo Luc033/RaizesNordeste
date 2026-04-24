@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: RaizesDeserto
+  datasource:
+    url: jdbc:postgresql://localhost:5421/db_raizes_nordeste?sslmode=disable
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
