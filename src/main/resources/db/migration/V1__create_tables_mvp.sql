@@ -1,11 +1,11 @@
 CREATE TABLE usuario
 (
     id            UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
-    nome          VARCHAR(150) NOT NULL,
+        nome          VARCHAR(150) NOT NULL,
     email         VARCHAR(150) NOT NULL UNIQUE,
     senha_hash    VARCHAR(255) NOT NULL,
-    perfil        VARCHAR(50)  NOT NULL
-        CHECK (perfil IN ('CLIENTE', 'ATENDENTE', 'COZINHA', 'GERENTE', 'ADMIN')),
+    role        VARCHAR(50)  NOT NULL
+        CHECK (role IN ('CLIENTE', 'ATENDENTE', 'COZINHA', 'GERENTE', 'ADMIN')),
     ativo         BOOLEAN      NOT NULL DEFAULT TRUE,
     data_cadastro TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -17,8 +17,6 @@ CREATE TABLE unidade
     id            UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
     nome          VARCHAR(100) NOT NULL,
     endereco      VARCHAR(255) NOT NULL,
-    cidade        VARCHAR(100),
-    regiao        VARCHAR(100),
     tipo_operacao VARCHAR(30)  NOT NULL DEFAULT 'COZINHA_COMPLETA'
         CHECK (tipo_operacao IN ('COZINHA_COMPLETA', 'FORMATO_REDUZIDO')),
     ativa         BOOLEAN      NOT NULL DEFAULT TRUE
