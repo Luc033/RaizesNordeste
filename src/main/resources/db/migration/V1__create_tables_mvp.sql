@@ -1,25 +1,28 @@
 CREATE TABLE usuario
 (
     id            UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
-        nome          VARCHAR(150) NOT NULL,
+    nome          VARCHAR(150) NOT NULL,
     email         VARCHAR(150) NOT NULL UNIQUE,
     senha_hash    VARCHAR(255) NOT NULL,
-    role        VARCHAR(50)  NOT NULL
+    role          VARCHAR(50)  NOT NULL
         CHECK (role IN ('CLIENTE', 'ATENDENTE', 'COZINHA', 'GERENTE', 'ADMIN')),
     ativo         BOOLEAN      NOT NULL DEFAULT TRUE,
-    data_cadastro TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+    criado_em TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_usuario_email ON usuario (email);
 
 CREATE TABLE unidade
 (
-    id            UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
-    nome          VARCHAR(100) NOT NULL,
-    endereco      VARCHAR(255) NOT NULL,
-    tipo_operacao VARCHAR(30)  NOT NULL DEFAULT 'COZINHA_COMPLETA'
+    id                 UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
+    nome               VARCHAR(100) NOT NULL,
+    endereco           VARCHAR(255) NOT NULL,
+    tipo_operacao      VARCHAR(30)  NOT NULL DEFAULT 'COZINHA_COMPLETA'
         CHECK (tipo_operacao IN ('COZINHA_COMPLETA', 'FORMATO_REDUZIDO')),
-    ativa         BOOLEAN      NOT NULL DEFAULT TRUE
+    ativa              BOOLEAN      NOT NULL DEFAULT TRUE,
+    horario_abertura   TIME         NOT NULL,
+    horario_fechamento TIME         NOT NULL
 );
 
 CREATE INDEX idx_unidade_ativa ON unidade (ativa) WHERE ativa = TRUE;
@@ -60,7 +63,7 @@ CREATE TABLE estoque
     quantidade_atual  INTEGER   NOT NULL DEFAULT 0
         CHECK (quantidade_atual >= 0),
     quantidade_minima INTEGER   NOT NULL DEFAULT 0,
-    atualizado_em     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_estoque_unidade
         FOREIGN KEY (unidade_id) REFERENCES unidade (id),
@@ -83,14 +86,13 @@ CREATE TABLE pedido
     status        VARCHAR(50)    NOT NULL DEFAULT 'AGUARDANDO_PAGAMENTO'
         CHECK (status IN (
                           'AGUARDANDO_PAGAMENTO',
-                          'PAGAMENTO_PENDENTE',
                           'EM_PREPARO',
                           'PRONTO',
                           'ENTREGUE',
                           'CANCELADO'
             )),
     valor_total   DECIMAL(10, 2) NOT NULL CHECK (valor_total >= 0),
-    data_criacao  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    criado_em     TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_pedido_usuario
@@ -111,7 +113,7 @@ CREATE TABLE item_pedido
     pedido_id               UUID           NOT NULL,
     produto_id              UUID           NOT NULL,
     quantidade              INTEGER        NOT NULL CHECK (quantidade > 0),
-    preco_unitario_aplicado DECIMAL(10, 2) NOT NULL CHECK (preco_unitario_aplicado >= 0),
+    preco_unitario DECIMAL(10, 2) NOT NULL CHECK (preco_unitario >= 0),
 
     CONSTRAINT fk_item_pedido
         FOREIGN KEY (pedido_id) REFERENCES pedido (id),

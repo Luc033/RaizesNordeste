@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -42,5 +46,12 @@ public class Unidade {
     @Column(nullable = false)
     @ColumnDefault("true")
     private Boolean ativa = true;
+
+    @Column(name = "horario_abertura", nullable = false)
+    private LocalDate horarioAbertura;
+
+    @Column(name = "horario_fechamento", nullable = false)
+    private LocalDate horarioFechamento;
+
 
 }
