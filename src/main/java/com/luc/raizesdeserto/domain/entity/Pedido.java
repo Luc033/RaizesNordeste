@@ -17,6 +17,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -43,7 +45,7 @@ public class Pedido {
     @ColumnDefault("'AGUARDANDO_PAGAMENTO'")
     private Status status = Status.AGUARDANDO_PAGAMENTO;
 
-    @PositiveOrZero(message = "Deve ser utilizado valores positivos em valor total.")
+    @PositiveOrZero(message = "Valor total deve ser igual ou maior que zero.")
     @NotNull(message = "Valor total não pode ser nulo.")
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valorTotal;
@@ -64,4 +66,10 @@ public class Pedido {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidade_id", nullable = false)
     private Unidade unidade;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemPedido> itens = new ArrayList<>();
+
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private Pagamento pagamento;
 }

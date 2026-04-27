@@ -16,6 +16,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity()
@@ -23,7 +24,7 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"logStatusPedido"})
 @NoArgsConstructor
 public class Usuario {
 
@@ -31,23 +32,22 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "O nome não pode ser nulo.")
-    @Size(min = 1, max = 150, message = "O nome deve estar entre 1 e 150 caracteres")
+    @NotBlank(message = "Nome não pode ser nulo.")
+    @Size(min = 1, max = 150, message = "Nome deve estar entre 1 e 150 caracteres")
     @Column(length = 150, nullable = false)
     private String nome;
 
-    @NotBlank(message = "O email não pode ser nulo.")
-    @Size(min = 1, max = 150, message = "O email deve estar entre 1 e 150 caracteres.")
-    @Email(message = "Deve ser um endereço de e-mail bem formado.")
+    @NotBlank(message = "Email não pode ser nulo.")
+    @Size(min = 1, max = 150, message = "Email deve estar entre 1 e 150 caracteres.")
+    @Email(message = "Email deve estar bem formado.")
     @Column(length = 150, unique = true)
     private String email;
 
-    @NotNull(message = "A senha não pode ser nula.")
-    @Size(min = 1, max = 8, message = "A senha deve estar entre 1 e 8 caracteres.")
+    @NotBlank(message = "Senha não pode ser nula.")
     @Column( name = "senha_hash", length = 255, nullable = false)
     private String senhaHash;
 
-    @NotNull(message = "O campo ativo não pode ser nulo.")
+    @NotNull(message = "Ativo não pode ser nulo.")
     @ColumnDefault("true")
     @Column(nullable = false)
     private Boolean ativo = true;
@@ -57,10 +57,13 @@ public class Usuario {
     private LocalDateTime criadoEm;
 
     @LastModifiedDate
-    @Column(name = "atualizado_em", nullable = false, updatable = false)
+    @Column(name = "atualizado_em", nullable = false)
     private LocalDateTime atualizadoEm;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 50, nullable = false)
     private Role role;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioResponsavel")
+    private List<LogStatusPedido> logStatusPedido;
 }

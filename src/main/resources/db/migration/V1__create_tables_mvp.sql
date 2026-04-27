@@ -7,8 +7,8 @@ CREATE TABLE usuario
     role          VARCHAR(50)  NOT NULL
         CHECK (role IN ('CLIENTE', 'ATENDENTE', 'COZINHA', 'GERENTE', 'ADMIN')),
     ativo         BOOLEAN      NOT NULL DEFAULT TRUE,
-    criado_em TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    atualizado_em TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+    criado_em     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em TIMESTAMP             DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_usuario_email ON usuario (email);
@@ -57,13 +57,13 @@ CREATE INDEX idx_consentimento_usuario ON consentimento_lgpd (usuario_id);
 
 CREATE TABLE estoque
 (
-    id                UUID PRIMARY KEY   DEFAULT gen_random_uuid(),
-    unidade_id        UUID      NOT NULL,
-    produto_id        UUID      NOT NULL,
-    quantidade_atual  INTEGER   NOT NULL DEFAULT 0
+    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    unidade_id        UUID    NOT NULL,
+    produto_id        UUID    NOT NULL,
+    quantidade_atual  INTEGER NOT NULL DEFAULT 0
         CHECK (quantidade_atual >= 0),
-    quantidade_minima INTEGER   NOT NULL DEFAULT 0,
-    atualizado_em     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    quantidade_minima INTEGER NOT NULL DEFAULT 0,
+    atualizado_em     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_estoque_unidade
         FOREIGN KEY (unidade_id) REFERENCES unidade (id),
@@ -109,10 +109,10 @@ CREATE INDEX idx_pedido_canal ON pedido (canal_pedido);
 
 CREATE TABLE item_pedido
 (
-    id                      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    pedido_id               UUID           NOT NULL,
-    produto_id              UUID           NOT NULL,
-    quantidade              INTEGER        NOT NULL CHECK (quantidade > 0),
+    id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pedido_id      UUID           NOT NULL,
+    produto_id     UUID           NOT NULL,
+    quantidade     INTEGER        NOT NULL CHECK (quantidade > 0),
     preco_unitario DECIMAL(10, 2) NOT NULL CHECK (preco_unitario >= 0),
 
     CONSTRAINT fk_item_pedido
@@ -126,20 +126,20 @@ CREATE INDEX idx_item_pedido_pedido ON item_pedido (pedido_id);
 
 CREATE TABLE pagamento
 (
-    id                   UUID PRIMARY KEY     DEFAULT gen_random_uuid(),
-    pedido_id            UUID        NOT NULL,
-    forma_pagamento      VARCHAR(50) NOT NULL
+    id                UUID PRIMARY KEY     DEFAULT gen_random_uuid(),
+    pedido_id         UUID        NOT NULL,
+    forma_pagamento   VARCHAR(50) NOT NULL
         CHECK (forma_pagamento IN (
                                    'PIX', 'CARTAO_CREDITO', 'CARTAO_DEBITO', 'DINHEIRO', 'MOCK'
             )),
-    status_pagamento     VARCHAR(50) NOT NULL DEFAULT 'PENDENTE'
+    status_pagamento  VARCHAR(50) NOT NULL DEFAULT 'PENDENTE'
         CHECK (status_pagamento IN (
                                     'PENDENTE', 'APROVADO', 'RECUSADO', 'TIMEOUT'
             )),
     gateway_pagamento VARCHAR(255),
-    payload_retorno      TEXT,
-    solicitado_em        TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    confirmado_em        TIMESTAMP,
+    payload_retorno   TEXT,
+    solicitado_em     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    confirmado_em     TIMESTAMP,
 
     CONSTRAINT fk_pagamento_pedido
         FOREIGN KEY (pedido_id) REFERENCES pedido (id),
@@ -151,11 +151,21 @@ CREATE TABLE log_status_pedido
 (
     id                     UUID PRIMARY KEY     DEFAULT gen_random_uuid(),
     pedido_id              UUID        NOT NULL,
-    status_anterior        VARCHAR(50),
-    status_novo            VARCHAR(50) NOT NULL,
+    status_anterior        VARCHAR(50) CHECK (status_anterior IN
+                                              ('AGUARDANDO_PAGAMENTO',
+                                               'EM_PREPARO',
+                                               'PRONTO',
+                                               'ENTREGUE',
+                                               'CANCELADO')),
+    status_novo            VARCHAR(50) NOT NULL CHECK (status_novo IN
+                                                       ('AGUARDANDO_PAGAMENTO',
+                                                        'EM_PREPARO',
+                                                        'PRONTO',
+                                                        'ENTREGUE',
+                                                        'CANCELADO')),
     usuario_responsavel_id UUID,
     observacao             TEXT,
-    atualizado_em         TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em          TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_log_pedido
         FOREIGN KEY (pedido_id) REFERENCES pedido (id),

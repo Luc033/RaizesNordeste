@@ -25,20 +25,20 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "O nome não pode ser nulo.")
-    @Size(min = 1, max = 100, message = "O nome deve estar entre 1 e 100 caracteres.")
+    @NotBlank(message = "Nome não pode ser nulo.")
+    @Size(min = 1, max = 100, message = "Nome deve estar entre 1 e 100 caracteres.")
     @Column(nullable = false, length = 100)
     private String nome;
 
     @Column(name = "descricao", columnDefinition = "TEXT")
     private String descricao;
 
-    @NotNull(message = "O preço não pode ser nulo.")
-    @PositiveOrZero(message = "O preço precisa ter números positivos.")
+    @NotNull(message = "Preço base não pode ser nulo.")
+    @PositiveOrZero(message = "Preço base deve ser igual ou maior que zero.")
     @Column(name = "preco_base", nullable = false, precision =  10, scale = 2)
     private BigDecimal precoBase;
 
-    @Size(min = 1, max = 80, message = "A categoria deve estar entre 1 e 80 caracteres.")
+    @Size(min = 1, max = 80, message = "Categoria deve estar entre 1 e 80 caracteres.")
     @Column(length = 80)
     private String categoria;
 

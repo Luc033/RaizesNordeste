@@ -29,13 +29,13 @@ public class Estoque {
     private UUID id;
 
     @PositiveOrZero(message = "Somente válido números positivos para quantidade atual.")
-    @NotNull(message = "A quantidade atual não pode ser nula.")
+    @NotNull(message = "Quantidade atual não pode ser nula.")
     @ColumnDefault("0")
     @Column(name = "quantidade_atual", nullable = false)
     private Integer quantidadeAtual = 0;
 
     @PositiveOrZero(message = "Somente válido números positivos para quantidade mínima.")
-    @NotNull(message = "A quantidade mínima não pode ser nula.")
+    @NotNull(message = "Quantidade mínima não pode ser nula.")
     @ColumnDefault("0")
     @Column(name = "quantidade_minima", nullable = false)
     private Integer quantidadeMinima = 0;

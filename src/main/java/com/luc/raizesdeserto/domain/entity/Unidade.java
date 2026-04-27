@@ -15,6 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -28,13 +29,13 @@ public class Unidade {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Size(min = 1, max = 100, message = "O nome deve estar entre 1 e 100 caracteres.")
-    @NotBlank(message = "O nome não pode ser nulo.")
+    @Size(min = 1, max = 100, message = "Nome deve estar entre 1 e 100 caracteres.")
+    @NotBlank(message = "Nome não pode ser nulo.")
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Size(min = 1, max = 255, message = "O endereço deve estar entre 1 e 255 caracteres.")
-    @NotBlank(message = "O endereço não pode ser nulo.")
+    @Size(min = 1, max = 255, message = "Endereço deve estar entre 1 e 255 caracteres.")
+    @NotBlank(message = "Endereço não pode ser nulo.")
     @Column(name = "endereco", nullable = false, length = 255)
     private String endereco;
 
@@ -48,10 +49,10 @@ public class Unidade {
     private Boolean ativa = true;
 
     @Column(name = "horario_abertura", nullable = false)
-    private LocalDate horarioAbertura;
+    private LocalTime horarioAbertura;
 
     @Column(name = "horario_fechamento", nullable = false)
-    private LocalDate horarioFechamento;
+    private LocalTime horarioFechamento;
 
 
 }

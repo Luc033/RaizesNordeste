@@ -27,12 +27,12 @@ public class ConsentimentoLGPD {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "A finalidade não pode ser nula.")
-    @Size(min = 1, max = 100, message = "A finalidade deve estar entre 1 e 100 caracteres.")
+    @NotBlank(message = "Finalidade não pode ser nula.")
+    @Size(min = 1, max = 100, message = "Finalidade deve estar entre 1 e 100 caracteres.")
     @Column(length = 100, nullable = false)
     private String finalidade;
 
-    @NotNull(message = "O aceite não pode ser nulo.")
+    @NotNull(message = "Aceite não pode ser nulo.")
     @Column(nullable = false)
     private Boolean aceitou;
 
@@ -40,7 +40,7 @@ public class ConsentimentoLGPD {
     @Column(name = "data_aceite", nullable = false, updatable = false)
     private LocalDateTime dataAceite;
 
-    @Size(min = 1, max = 45, message = "O IP deve estar entre 1 e 45 caracteres.")
+    @Size(min = 1, max = 45, message = "IP deve estar entre 1 e 45 caracteres.")
     @Column(name = "ip_origem", length = 45)
     private String ipOrigem;
 
