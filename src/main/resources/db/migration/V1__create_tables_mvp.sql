@@ -136,7 +136,7 @@ CREATE TABLE pagamento
         CHECK (status_pagamento IN (
                                     'PENDENTE', 'APROVADO', 'RECUSADO', 'TIMEOUT'
             )),
-    transacao_externa_id VARCHAR(255),
+    gateway_pagamento VARCHAR(255),
     payload_retorno      TEXT,
     solicitado_em        TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     confirmado_em        TIMESTAMP,
@@ -155,7 +155,7 @@ CREATE TABLE log_status_pedido
     status_novo            VARCHAR(50) NOT NULL,
     usuario_responsavel_id UUID,
     observacao             TEXT,
-    data_alteracao         TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em         TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_log_pedido
         FOREIGN KEY (pedido_id) REFERENCES pedido (id),
