@@ -5,7 +5,7 @@ CREATE TABLE usuario
     email         VARCHAR(150) NOT NULL UNIQUE,
     senha_hash    VARCHAR(255) NOT NULL,
     role          VARCHAR(50)  NOT NULL
-        CHECK (role IN ('CLIENTE', 'ATENDENTE', 'COZINHA', 'GERENTE', 'ADMIN')),
+        CHECK (role IN ('ROLE_CLIENTE', 'ROLE_ATENDENTE', 'ROLE_COZINHA', 'ROLE_GERENTE', 'ROLE_ADMIN')),
     ativo         BOOLEAN      NOT NULL DEFAULT TRUE,
     criado_em     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP             DEFAULT CURRENT_TIMESTAMP
