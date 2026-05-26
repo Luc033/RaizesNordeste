@@ -28,9 +28,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(a -> a
+//                        .anyRequest().permitAll())
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "auth/login").permitAll()
-//                        .anyRequest().permitAll()
                         .anyRequest().authenticated())
                 .build();
     }
