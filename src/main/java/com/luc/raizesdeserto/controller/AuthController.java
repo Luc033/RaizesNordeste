@@ -1,12 +1,15 @@
 package com.luc.raizesdeserto.controller;
 
+import com.luc.raizesdeserto.config.TokenConfig;
 import com.luc.raizesdeserto.domain.entity.Usuario;
+import com.luc.raizesdeserto.domain.enums.Role;
 import com.luc.raizesdeserto.dto.auth.LoginRequest;
 import com.luc.raizesdeserto.dto.auth.LoginResponse;
 import com.luc.raizesdeserto.dto.auth.RegisterRequest;
 import com.luc.raizesdeserto.dto.auth.RegisterResponse;
 import com.luc.raizesdeserto.service.UsuarioService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,15 +55,30 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponse(token));
     }
 
-    @PostMapping("/register-cliente")
+    @PostMapping("/registrar-cliente")
     public ResponseEntity<RegisterResponse> registrarCliente(@Valid @RequestBody RegisterRequest registerRequest){
-        return null;
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(registerRequest.nome());
+        novoUsuario.setEmail(registerRequest.email());
+        novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
+        novoUsuario.setRole(Role.ROLE_CLIENTE);
+        usuarioService.salvar(novoUsuario);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario.getNome(), novoUsuario.getEmail()));
     }
 
-    @PostMapping("/register-funcionario")
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    @PostMapping("/registrar-funcionario")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<RegisterResponse> registrarFuncionario(@Valid @RequestBody RegisterRequest registerRequest){
-        return null;
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(registerRequest.nome());
+        novoUsuario.setEmail(registerRequest.email());
+        novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
+        novoUsuario.setRole(registerRequest.role());
+        usuarioService.salvar(novoUsuario);
+
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario.getNome(), novoUsuario.getEmail()));
     }
 
 
