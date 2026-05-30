@@ -29,13 +29,13 @@ public class Unidade {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Size(min = 1, max = 100, message = "Nome deve estar entre 1 e 100 caracteres.")
+    @Size(min = 1, max = 100, message = "Nome da unidade deve estar entre 1 e 100 caracteres.")
     @NotBlank(message = "Nome não pode ser nulo.")
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
     @Size(min = 1, max = 255, message = "Endereço deve estar entre 1 e 255 caracteres.")
-    @NotBlank(message = "Endereço não pode ser nulo.")
+    @NotBlank(message = "Endereço  da Unidade não pode ser nulo.")
     @Column(name = "endereco", nullable = false, length = 255)
     private String endereco;
 
@@ -48,9 +48,11 @@ public class Unidade {
     @ColumnDefault("true")
     private Boolean ativa = true;
 
+    @NotNull(message = "Horário de abertura da unidade não pode estar vazio.")
     @Column(name = "horario_abertura", nullable = false)
     private LocalTime horarioAbertura;
 
+    @NotNull(message = "Horário de fechamento da unidade não pode estar vazio.")
     @Column(name = "horario_fechamento", nullable = false)
     private LocalTime horarioFechamento;
 

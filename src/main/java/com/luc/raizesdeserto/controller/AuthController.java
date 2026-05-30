@@ -5,8 +5,8 @@ import com.luc.raizesdeserto.domain.entity.Usuario;
 import com.luc.raizesdeserto.domain.enums.Role;
 import com.luc.raizesdeserto.dto.auth.LoginRequest;
 import com.luc.raizesdeserto.dto.auth.LoginResponse;
-import com.luc.raizesdeserto.dto.auth.RegisterRequest;
-import com.luc.raizesdeserto.dto.auth.RegisterResponse;
+import com.luc.raizesdeserto.dto.usuario.RegisterRequest;
+import com.luc.raizesdeserto.dto.usuario.RegisterResponse;
 import com.luc.raizesdeserto.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -45,42 +45,43 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
         Authentication authentication = authenticationManager.authenticate(userAndPass);
-
         Usuario usuario = (Usuario) authentication.getPrincipal();
         String token = tokenConfig.gerarToken(usuario);
-
         return ResponseEntity.ok(new LoginResponse(token));
     }
 
     @PostMapping("/registrar-cliente")
-    public ResponseEntity<RegisterResponse> registrarCliente(@Valid @RequestBody RegisterRequest registerRequest){
-        Usuario novoUsuario = new Usuario();
-        novoUsuario.setNome(registerRequest.nome());
-        novoUsuario.setEmail(registerRequest.email());
-        novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
-        novoUsuario.setRole(Role.ROLE_CLIENTE);
-        usuarioService.salvar(novoUsuario);
-
+    public ResponseEntity registrarCliente(@Valid @RequestBody RegisterRequest registerRequest) {
+            Usuario novoUsuario = new Usuario();
+        try {
+            novoUsuario.setNome(registerRequest.nome());
+            novoUsuario.setEmail(registerRequest.email());
+            novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
+            novoUsuario.setRole(Role.ROLE_CLIENTE);
+            usuarioService.salvar(novoUsuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario.getNome(), novoUsuario.getEmail()));
     }
 
     @PostMapping("/registrar-funcionario")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<RegisterResponse> registrarFuncionario(@Valid @RequestBody RegisterRequest registerRequest){
+    public ResponseEntity registrarFuncionario(@Valid @RequestBody RegisterRequest registerRequest) {
         Usuario novoUsuario = new Usuario();
-        novoUsuario.setNome(registerRequest.nome());
-        novoUsuario.setEmail(registerRequest.email());
-        novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
-        novoUsuario.setRole(registerRequest.role());
-        usuarioService.salvar(novoUsuario);
-
-
+        try {
+            novoUsuario.setNome(registerRequest.nome());
+            novoUsuario.setEmail(registerRequest.email());
+            novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
+            novoUsuario.setRole(registerRequest.role());
+            usuarioService.salvar(novoUsuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario.getNome(), novoUsuario.getEmail()));
     }
-
-
 
 }

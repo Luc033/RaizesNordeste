@@ -1,6 +1,7 @@
 package com.luc.raizesdeserto.service;
 
 import com.luc.raizesdeserto.domain.entity.Usuario;
+import com.luc.raizesdeserto.domain.enums.Role;
 import com.luc.raizesdeserto.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,4 +39,5 @@ public class UsuarioService {
         }
 
     }
+
 }
