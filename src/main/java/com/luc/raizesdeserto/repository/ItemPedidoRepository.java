@@ -1,13 +1,12 @@
 package com.luc.raizesdeserto.repository;
 
+import com.luc.raizesdeserto.domain.entity.ItemPedido;
 import com.luc.raizesdeserto.domain.entity.Unidade;
-
-import java.util.List;
-import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UnidadeRepository extends JpaRepository<Unidade, UUID> {
+import java.util.UUID;
 
+@Repository
+public interface ItemPedidoRepository extends JpaRepository<ItemPedido, UUID>{
 }

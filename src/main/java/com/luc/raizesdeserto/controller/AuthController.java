@@ -8,6 +8,7 @@ import com.luc.raizesdeserto.dto.auth.LoginResponse;
 import com.luc.raizesdeserto.dto.usuario.RegisterRequest;
 import com.luc.raizesdeserto.dto.usuario.RegisterResponse;
 import com.luc.raizesdeserto.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,13 +55,19 @@ public class AuthController {
     }
 
     @PostMapping("/registrar-cliente")
-    public ResponseEntity registrarCliente(@Valid @RequestBody RegisterRequest registerRequest) {
-            Usuario novoUsuario = new Usuario();
+    public ResponseEntity registrarCliente(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
+
+        if(!registerRequest.aceitouTermos()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Necessário aceitar os termos de uso.");
+        }
+
+        Usuario novoUsuario = new Usuario();
         try {
             novoUsuario.setNome(registerRequest.nome());
             novoUsuario.setEmail(registerRequest.email());
             novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
             novoUsuario.setRole(Role.ROLE_CLIENTE);
+            usuarioService.incluirConsentimento(novoUsuario.getId(), request);
             usuarioService.salvar(novoUsuario);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -70,7 +77,11 @@ public class AuthController {
 
     @PostMapping("/registrar-funcionario")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity registrarFuncionario(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity registrarFuncionario(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
+        if(!registerRequest.aceitouTermos()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Necessário aceitar os termos de uso.");
+        }
+
         Usuario novoUsuario = new Usuario();
         try {
             novoUsuario.setNome(registerRequest.nome());
