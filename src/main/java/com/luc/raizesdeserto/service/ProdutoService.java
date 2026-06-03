@@ -28,4 +28,18 @@ public class ProdutoService {
     public List<Produto> listar(){
         return this.produtoRepository.findAll();
     }
+
+    public Boolean existeProduto(UUID id){
+        return this.produtoRepository.existsById(id);
+    }
+
+    public Boolean estaAtivo(UUID id){
+        var produto = produtoRepository.findProdutoByIdAndAtivoTrue(id);
+
+        if(produto.isPresent()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
