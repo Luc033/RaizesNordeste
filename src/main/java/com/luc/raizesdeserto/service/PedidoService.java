@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PedidoService {
@@ -111,6 +113,37 @@ public class PedidoService {
             // Retorna que o canal do novoPedido é inválido - 400 Bad Request
             throw new IllegalArgumentException("Canal de novoPedido inválido: " + novoPedido.getCanalPedido());
         }
+    }
+
+    /**
+     * Atualiza o status de um pedido existente.
+     *
+     * <p>Valida se o novo status pertence ao enum {@link Status} e, em seguida,
+     * localiza o pedido pelo ID fornecido para aplicar a atualização.
+     *
+     * @param novoStatus o status a ser aplicado ao pedido
+     * @param pedidoId   identificador único do pedido a ser atualizado
+     * @return o {@link Status} atualizado e persistido
+     * @throws EntityNotFoundException se o status informado não existir no enum
+     *                                 ou se nenhum pedido for encontrado com o ID fornecido
+     */
+    @Transactional
+    public Status atualizarStatus(Status novoStatus, UUID pedidoId){
+        if (!Arrays.stream(Status.values()).anyMatch(s -> s.equals(novoStatus))) {
+            throw new EntityNotFoundException("Novo status do pedido não encontrado: " + novoStatus);
+        }
+
+        Optional<Pedido> pedido = this.buscarPorId(pedidoId);
+        if(pedido.isPresent()){
+            pedido.get().setStatus(novoStatus);
+            return pedidoRepository.save(pedido.get()).getStatus();
+        }else{
+            throw new EntityNotFoundException("Pedido não encontrado: " + pedidoId);
+        }
+    }
+
+    public Optional<Pedido> buscarPorId(UUID id){
+        return pedidoRepository.findById(id);
     }
 
 
