@@ -4,10 +4,7 @@ import com.luc.raizesdeserto.domain.enums.FormaPagamento;
 import com.luc.raizesdeserto.domain.enums.StatusPagamento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -54,4 +51,9 @@ public class Pagamento {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
+
+    public Pagamento(FormaPagamento formaPagamento, StatusPagamento statusPagamento) {
+        this.formaPagamento = formaPagamento;
+        this.statusPagamento = statusPagamento;
+    }
 }
