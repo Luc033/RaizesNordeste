@@ -3,6 +3,7 @@ package com.luc.raizesdeserto.service;
 import com.luc.raizesdeserto.domain.entity.ItemPedido;
 import com.luc.raizesdeserto.domain.entity.Pagamento;
 import com.luc.raizesdeserto.domain.entity.Pedido;
+import com.luc.raizesdeserto.domain.entity.Usuario;
 import com.luc.raizesdeserto.domain.enums.CanalPedido;
 import com.luc.raizesdeserto.domain.enums.Status;
 import com.luc.raizesdeserto.domain.enums.StatusPagamento;
@@ -25,12 +26,14 @@ public class PedidoService {
     private final ProdutoService produtoService;
     private final EstoqueService estoqueService;
     private final UsuarioService usuarioService;
+    private final AuditoriaService auditoriaService;
 
-    public PedidoService(PedidoRepository pedidoRepository, ProdutoService produtoService, EstoqueService estoqueService, UsuarioService usuarioService) {
+    public PedidoService(PedidoRepository pedidoRepository, ProdutoService produtoService, EstoqueService estoqueService, UsuarioService usuarioService, AuditoriaService auditoriaService) {
         this.pedidoRepository = pedidoRepository;
         this.produtoService = produtoService;
         this.estoqueService = estoqueService;
         this.usuarioService = usuarioService;
+        this.auditoriaService = auditoriaService;
     }
 
     /**
@@ -106,11 +109,12 @@ public class PedidoService {
                 }
             }
             pedidoParaSalvar.setCanalPedido(novoPedido.getCanalPedido());
-            pedidoParaSalvar.setStatus(Status.AGUARDANDO_PAGAMENTO);
+            this.atualizarStatus(pedidoParaSalvar.getUsuario(), pedidoParaSalvar.getId(), Status.AGUARDANDO_PAGAMENTO, "Pedido criado.");
             pedidoParaSalvar.setValorTotal(valorTotal);
             pedidoParaSalvar.setUsuario(novoPedido.getUsuario());
             pedidoParaSalvar.setUnidade(novoPedido.getUnidade());
             pedidoParaSalvar.setPagamento(new Pagamento(novoPedido.getPagamento().getFormaPagamento(), StatusPagamento.PENDENTE));
+            auditoriaService.registrarTransicao(pedidoParaSalvar, pedidoParaSalvar.getUsuario(), null, Status.AGUARDANDO_PAGAMENTO, "Pedido criado.");
             return pedidoRepository.save(pedidoParaSalvar);
         } else {
             // Retorna que o canal do novoPedido é inválido - 400 Bad Request
@@ -119,25 +123,31 @@ public class PedidoService {
     }
 
     /**
-     * Atualiza o status de um pedido existente.
+     * Atualiza o status de um pedido, registrando a transição na auditoria.
      *
-     * <p>Valida se o novo status pertence ao enum {@link Status} e, em seguida,
-     * localiza o pedido pelo ID fornecido para aplicar a atualização.
+     * <p>Valida se o novo status é um valor reconhecido do enum {@link Status} e,
+     * em seguida, persiste a mudança. Cada transição é registrada via
+     * {@code AuditoriaService} antes da atualização, garantindo rastreabilidade
+     * das alterações.</p>
      *
-     * @param novoStatus o status a ser aplicado ao pedido
-     * @param pedidoId   identificador único do pedido a ser atualizado
-     * @return o {@link Status} atualizado e persistido
-     * @throws EntityNotFoundException se o status informado não existir no enum
-     *                                 ou se nenhum pedido for encontrado com o ID fornecido
+     * @param usuario  Usuário responsável pela alteração
+     * @param pedidoId   identificador do pedido a ser atualizado
+     * @param novoStatus novo status a ser aplicado ao pedido
+     * @param observacao comentário opcional justificando a mudança de status
+     * @return o {@link Status} atualizado após a persistência
+     * @throws EntityNotFoundException se {@code novoStatus} não for um valor válido
+     *                                 do enum {@link Status}, ou se o pedido
+     *                                 correspondente a {@code pedidoId} não for encontrado
      */
     @Transactional
-    public Status atualizarStatus(Status novoStatus, UUID pedidoId){
+    public Status atualizarStatus(Usuario usuario, UUID pedidoId, Status novoStatus, String observacao){
         if (!Arrays.stream(Status.values()).anyMatch(s -> s.equals(novoStatus))) {
             throw new EntityNotFoundException("Novo status do pedido não encontrado: " + novoStatus);
         }
 
         Optional<Pedido> pedido = this.buscarPorId(pedidoId);
         if(pedido.isPresent()){
+            auditoriaService.registrarTransicao(pedido.get(), usuario, pedido.get().getStatus(), novoStatus, observacao);
             pedido.get().setStatus(novoStatus);
             return pedidoRepository.save(pedido.get()).getStatus();
         }else{
@@ -152,6 +162,5 @@ public class PedidoService {
     public List<Pedido> listarPedidosAguardandoPagamento(){
         return pedidoRepository.findByStatusAndCriadoEmAfter(Status.AGUARDANDO_PAGAMENTO, LocalDateTime.now().minusMinutes(10));
     }
-
 
 }

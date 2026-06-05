@@ -15,3 +15,10 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+
+
+gateway:
+  pagamento:
+    mock:
+      url-approved: "https://mocki.io/v1/896aa5b1-d85e-473e-b6a4-7a192a2533e2"
+      url-declined: "https://mocki.io/v1/c83123b7-a25a-490e-ac96-6182885755aa"

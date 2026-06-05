@@ -22,11 +22,13 @@ public class PagamentoService {
     private final PagamentoRepository pagamentoRepository;
     private final PedidoService pedidoService;
     private final EstoqueService estoqueService;
+    private final AuditoriaService auditoriaService;
 
-    public PagamentoService(PagamentoRepository pagamentoRepository, PedidoService pedidoService, EstoqueService estoqueService) {
+    public PagamentoService(PagamentoRepository pagamentoRepository, PedidoService pedidoService, EstoqueService estoqueService, AuditoriaService auditoriaService) {
         this.pagamentoRepository = pagamentoRepository;
         this.pedidoService = pedidoService;
         this.estoqueService = estoqueService;
+        this.auditoriaService = auditoriaService;
     }
 
     /**
@@ -97,10 +99,8 @@ public class PagamentoService {
             pedido.get().getPagamento().setConfirmadoEm(LocalDateTime.now());
             pedido.get().getPagamento().setPayloadRetorno(payloadWebhook);
             pedido.get().setStatus(Status.EM_PREPARO);
+            pedidoService.atualizarStatus(null, pedidoId, Status.EM_PREPARO, "Pedido aprovado pelo gateway.");
             pedido.get().getPagamento().setStatusPagamento(StatusPagamento.APROVADO);
-            // Necessário implementar o service AuditoriaService para incluir a mudança do status do pedido para aprovado ou recusado,
-            // bem como, incluir no PedidoService quando o pedido entra como 'AGUARDANDO_PAGAMENTO'
-
         }else if(statusPagamento.equals(StatusPagamento.RECUSADO)){
             pedido.get().getPagamento().setConfirmadoEm(LocalDateTime.now());
             pedido.get().getPagamento().setPayloadRetorno(payloadWebhook);
@@ -135,7 +135,7 @@ public class PagamentoService {
 
         if(!pedidos.isEmpty()){
             for(Pedido pedido : pedidos){
-                pedidoService.atualizarStatus(Status.CANCELADO, pedido.getId());
+                pedidoService.atualizarStatus(null, pedido.getId(), Status.CANCELADO, "Pedido cancelado por inatividade.");
                 Pagamento pagamento = pedido.getPagamento();
                 pagamento.setStatusPagamento(StatusPagamento.TIMEOUT);
                 pagamentoRepository.save(pagamento);
