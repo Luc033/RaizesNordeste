@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -92,6 +94,7 @@ public class PedidoService {
                         itemPedido.setPrecoUnitario(itemEstoque.get().getProduto().getPrecoBase());
                         itemPedido.setQuantidade(item.getQuantidade());
                         pedidoParaSalvar.getItens().add(itemPedido);
+                        estoqueService.debitar(item.getProduto().getId(), item.getPedido().getUnidade().getId(), item.getQuantidade());
                         valorTotal = valorTotal.add(itemEstoque.get().getProduto().getPrecoBase().multiply(BigDecimal.valueOf(item.getQuantidade())));
                     } else {
                         // retornar erro, estoque insuficiente
@@ -144,6 +147,10 @@ public class PedidoService {
 
     public Optional<Pedido> buscarPorId(UUID id){
         return pedidoRepository.findById(id);
+    }
+
+    public List<Pedido> listarPedidosAguardandoPagamento(){
+        return pedidoRepository.findByStatusAndCriadoEmAfter(Status.AGUARDANDO_PAGAMENTO, LocalDateTime.now().minusMinutes(10));
     }
 
 

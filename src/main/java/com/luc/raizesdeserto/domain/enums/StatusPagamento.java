@@ -4,5 +4,5 @@ public enum StatusPagamento {
     PENDENTE,
     APROVADO,
     RECUSADO,
-    TIMEIOUT
+    TIMEOUT
 }
