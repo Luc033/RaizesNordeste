@@ -1,10 +1,7 @@
 package com.luc.raizesdeserto.dto.usuario;
 
 import com.luc.raizesdeserto.domain.enums.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 
 @Builder
@@ -18,9 +15,7 @@ public record RegisterRequest(@NotBlank(message = "Nome não pode ser nulo.")
                               @NotBlank(message = "Senha não pode ser nula.")
                               @Size(min = 8, max = 50, message = "Senha deve estar entre 1 e 50 caracteres.")
                                String senha,
-                              @NotNull(message = "Aceite de termos é obrigatório")
+                              @AssertTrue(message = "Aceite de termos é obrigatório")
                               Boolean aceitouTermos,
                               Role role) {
-
-
 }

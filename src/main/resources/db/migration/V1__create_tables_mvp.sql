@@ -138,7 +138,7 @@ CREATE TABLE pagamento
             )),
     gateway_pagamento VARCHAR(255),
     payload_retorno   TEXT,
-    solicitado_em     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    solicitado_em     TIMESTAMP,
     confirmado_em     TIMESTAMP,
 
     CONSTRAINT fk_pagamento_pedido

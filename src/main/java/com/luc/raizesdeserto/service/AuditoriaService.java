@@ -5,6 +5,7 @@ import com.luc.raizesdeserto.domain.entity.Pedido;
 import com.luc.raizesdeserto.domain.entity.Usuario;
 import com.luc.raizesdeserto.domain.enums.Status;
 import com.luc.raizesdeserto.repository.LogStatusPedidoRepository;
+import com.luc.raizesdeserto.repository.PedidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,9 @@ import java.util.UUID;
 public class AuditoriaService {
 
     private final LogStatusPedidoRepository logStatusPedidoRepository;
-    private final PedidoService pedidoService;
-    private final UsuarioService usuarioService;
 
-    public AuditoriaService(LogStatusPedidoRepository logStatusPedidoRepository, PedidoService pedidoService, UsuarioService usuarioService) {
+    public AuditoriaService(LogStatusPedidoRepository logStatusPedidoRepository) {
         this.logStatusPedidoRepository = logStatusPedidoRepository;
-        this.pedidoService = pedidoService;
-        this.usuarioService = usuarioService;
     }
 
 

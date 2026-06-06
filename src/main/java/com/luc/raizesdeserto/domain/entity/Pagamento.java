@@ -18,7 +18,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @ToString(exclude = {"pedido"})
-@EntityListeners(AuditingEntityListener.class)
 public class Pagamento {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -41,8 +40,7 @@ public class Pagamento {
     @Column(name = "payload_retorno", columnDefinition = "TEXT")
     private String payloadRetorno;
 
-    @CreatedDate
-    @Column(name = "solicitado_em", nullable = false)
+    @Column(name = "solicitado_em")
     private LocalDateTime solicitadoEm;
 
     @Column(name = "confirmado_em")

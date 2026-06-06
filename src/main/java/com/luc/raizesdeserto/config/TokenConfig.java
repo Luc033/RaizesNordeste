@@ -8,7 +8,9 @@ import com.luc.raizesdeserto.domain.entity.Usuario;
 import com.luc.raizesdeserto.domain.enums.Role;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.TemporalAmount;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,7 +36,7 @@ public class TokenConfig {
                 .withClaim("usuarioId", usuario.getId().toString())
                 .withClaim("role", usuario.getRole().name())
                 .withSubject(usuario.getEmail())
-                .withExpiresAt(Instant.now().plusSeconds(28000))
+                .withExpiresAt(Instant.now().plus(Duration.ofHours(24)))
                 .withIssuedAt(Instant.now())
                 .sign(algorithm);
     }
