@@ -2,6 +2,7 @@ package com.luc.raizesdeserto.service;
 
 import com.luc.raizesdeserto.domain.entity.Produto;
 import com.luc.raizesdeserto.repository.ProdutoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,22 +13,27 @@ import java.util.UUID;
 public class ProdutoService {
     private final ProdutoRepository produtoRepository;
 
-
     public ProdutoService(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
     }
+
 
     public void salvar(Produto produto){
         this.produtoRepository.save(produto);
     }
 
-    public Optional<Produto> buscarPorId(UUID id){
-        return this.produtoRepository.findById(id);
+    public Produto buscarPorId(UUID id){
+        return this.produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado: " + id));
     }
 
     public List<Produto> listar(){
         return this.produtoRepository.findAll();
     }
+
+    public List<Produto> listarProdutosPorUnidade(UUID unidadeId){
+        return this.produtoRepository.findAllByUnidadeId(unidadeId);
+    }
+
 
     public Boolean existeProduto(UUID id){
         return this.produtoRepository.existsById(id);
@@ -42,4 +48,5 @@ public class ProdutoService {
             return false;
         }
     }
+
 }

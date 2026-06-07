@@ -1,5 +1,6 @@
 package com.luc.raizesdeserto.dto.produto;
 
+import com.luc.raizesdeserto.domain.entity.Produto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -17,4 +18,8 @@ public record ProdutoResponse(
         String categoria,
         Boolean sazonal
 ) {
+    public ProdutoResponse(Produto p){
+        this(p.getId(), p.getAtivo(), p.getNome(), p.getDescricao(), p.getPrecoBase(), p.getCategoria(), p.getSazonal());
+    }
+
 }

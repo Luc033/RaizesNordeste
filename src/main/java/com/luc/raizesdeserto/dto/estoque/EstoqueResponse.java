@@ -1,5 +1,7 @@
 package com.luc.raizesdeserto.dto.estoque;
 
+import com.luc.raizesdeserto.domain.entity.Estoque;
+
 import java.util.UUID;
 
 public record EstoqueResponse(
@@ -7,4 +9,7 @@ public record EstoqueResponse(
         UUID produtoId,
         Integer quantidadeAtual
 ) {
+    public EstoqueResponse(Estoque e){
+        this(e.getId(), e.getProduto().getId(), e.getQuantidadeAtual());
+    }
 }

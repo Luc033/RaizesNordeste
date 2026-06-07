@@ -39,7 +39,7 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/auth/registrar-cliente").permitAll()
 //                        .anyRequest().authenticated())
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+    //            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

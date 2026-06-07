@@ -11,6 +11,9 @@ public record MovimentacaoRequest(
         @NotNull(message = "ID do produto não pode ser nulo.")
         UUID produtoID,
 
+        @NotNull(message = "ID da unidade não pode ser nulo.")
+        UUID unidadeId,
+
         @Positive(message = "Quantidade deve ser maior que zero.")
         @NotNull(message = "Quantidade não pode ser nula.")
         Integer quantidade,

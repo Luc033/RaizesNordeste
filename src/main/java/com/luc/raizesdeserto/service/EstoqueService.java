@@ -34,8 +34,8 @@ public class EstoqueService {
     }
 
     public void debitar(UUID produtoId, UUID unidadeId, int quantidade) {
-        Optional<Produto> produto = produtoService.buscarPorId(produtoId);
-        Optional<Unidade> unidade = unidadeService.buscarPorId(unidadeId);
+        Optional<Produto> produto = Optional.ofNullable(produtoService.buscarPorId(produtoId));
+        Optional<Unidade> unidade = Optional.ofNullable(unidadeService.buscarPorId(unidadeId));
 
         if (produto.isPresent() && unidade.isPresent()) {
             Estoque estoque = new Estoque();
@@ -59,8 +59,8 @@ public class EstoqueService {
     }
 
     public void creditar(UUID produtoId, UUID unidadeId, int quantidade) {
-        Optional<Produto> produto = produtoService.buscarPorId(produtoId);
-        Optional<Unidade> unidade = unidadeService.buscarPorId(unidadeId);
+        Optional<Produto> produto = Optional.ofNullable(produtoService.buscarPorId(produtoId));
+        Optional<Unidade> unidade = Optional.ofNullable(unidadeService.buscarPorId(unidadeId));
 
         if (produto.isPresent() && unidade.isPresent()) {
             Estoque estoque = new Estoque();
