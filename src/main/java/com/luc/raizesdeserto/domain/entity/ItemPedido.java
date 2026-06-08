@@ -1,6 +1,7 @@
 package com.luc.raizesdeserto.domain.entity;
 
 
+import com.luc.raizesdeserto.dto.pedido.ItemPedidoRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -43,5 +44,8 @@ public class ItemPedido {
     @ManyToOne(fetch = FetchType.LAZY)
     private Produto produto;
 
-
+    public ItemPedido(Produto produto, Integer quantidade) {
+        this.quantidade = quantidade;
+        this.produto = produto;
+    }
 }

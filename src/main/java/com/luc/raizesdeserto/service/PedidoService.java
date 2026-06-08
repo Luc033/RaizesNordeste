@@ -134,33 +134,37 @@ public class PedidoService {
      * @param pedidoId   identificador do pedido a ser atualizado
      * @param novoStatus novo status a ser aplicado ao pedido
      * @param observacao comentário opcional justificando a mudança de status
-     * @return o {@link Status} atualizado após a persistência
+     * @return o {@link Pedido} atualizado após a persistência
      * @throws EntityNotFoundException se {@code novoStatus} não for um valor válido
      *                                 do enum {@link Status}, ou se o pedido
      *                                 correspondente a {@code pedidoId} não for encontrado
      */
     @Transactional
-    public Status atualizarStatus(Usuario usuario, UUID pedidoId, Status novoStatus, String observacao){
+    public Pedido atualizarStatus(Usuario usuario, UUID pedidoId, Status novoStatus, String observacao){
         if (!Arrays.stream(Status.values()).anyMatch(s -> s.equals(novoStatus))) {
             throw new EntityNotFoundException("Novo status do pedido não encontrado: " + novoStatus);
         }
 
-        Optional<Pedido> pedido = this.buscarPorId(pedidoId);
+        Optional<Pedido> pedido = Optional.ofNullable(this.buscarPorId(pedidoId));
         if(pedido.isPresent()){
             auditoriaService.registrarTransicao(pedido.get(), usuario, pedido.get().getStatus(), novoStatus, observacao);
             pedido.get().setStatus(novoStatus);
-            return pedidoRepository.save(pedido.get()).getStatus();
+            return pedidoRepository.save(pedido.get());
         }else{
             throw new EntityNotFoundException("Pedido não encontrado: " + pedidoId);
         }
     }
 
-    public Optional<Pedido> buscarPorId(UUID id){
-        return pedidoRepository.findById(id);
+    public Pedido buscarPorId(UUID id){
+        return pedidoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado: " + id));
     }
 
     public List<Pedido> listarPedidosAguardandoPagamento(){
         return pedidoRepository.findByStatusAndCriadoEmAfter(Status.AGUARDANDO_PAGAMENTO, LocalDateTime.now().minusMinutes(10));
+    }
+
+    public List<Pedido> listarPedidosPorCanal(CanalPedido canal){
+        return pedidoRepository.findByCanal(canal);
     }
 
 }

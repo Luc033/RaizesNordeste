@@ -49,4 +49,8 @@ public class Produto {
     @Column(nullable = false)
     @ColumnDefault("true")
     private Boolean ativo = true;
+
+    public Produto(UUID id) {
+        this.id = id;
+    }
 }

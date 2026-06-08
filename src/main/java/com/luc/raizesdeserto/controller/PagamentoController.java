@@ -3,6 +3,7 @@ package com.luc.raizesdeserto.controller;
 import com.luc.raizesdeserto.dto.pagamento.PagamentoMockRequest;
 import com.luc.raizesdeserto.dto.pagamento.PagamentoResponse;
 import com.luc.raizesdeserto.service.PagamentoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class PagamentoController {
 
     @PostMapping("mock/callback")
     public ResponseEntity<Void> processarRetornoPagamento(
-            @RequestBody PagamentoMockRequest request
+            @Valid @RequestBody PagamentoMockRequest request
             ){
         pagamentoService.registrarRetorno(request.pedidoId(), request.statusPagamento(), request.payloadWebhook());
         return ResponseEntity.ok().build();

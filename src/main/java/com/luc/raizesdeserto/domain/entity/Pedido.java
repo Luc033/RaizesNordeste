@@ -2,6 +2,7 @@ package com.luc.raizesdeserto.domain.entity;
 
 import com.luc.raizesdeserto.domain.enums.CanalPedido;
 import com.luc.raizesdeserto.domain.enums.Status;
+import com.luc.raizesdeserto.dto.pedido.CriarPedidoRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -72,4 +73,8 @@ public class Pedido {
 
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
     private Pagamento pagamento;
+
+    public void adicionarItens(List<ItemPedido> itens){
+        this.itens.addAll(itens);
+    }
 }

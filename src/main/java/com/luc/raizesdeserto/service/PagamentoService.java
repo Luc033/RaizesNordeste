@@ -44,7 +44,7 @@ public class PagamentoService {
      */
     @Transactional
     public String solicitarMock(UUID pedidoId) {
-        Optional<Pedido> pedido = pedidoService.buscarPorId(pedidoId);
+        Optional<Pedido> pedido = Optional.ofNullable(pedidoService.buscarPorId(pedidoId));
 
         // Valida se o pedido existe
         if (pedido.isEmpty()) {

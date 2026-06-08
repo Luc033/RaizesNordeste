@@ -63,7 +63,7 @@ public class AuthController {
 
         Usuario novoUsuario = new Usuario();
         try {
-            novoUsuario.setNome(registerRequest.nome());
+            novoUsuario.setNome(registerRequest.nome().trim());
             novoUsuario.setEmail(registerRequest.email());
             novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
             novoUsuario.setRole(Role.ROLE_CLIENTE);
@@ -84,7 +84,7 @@ public class AuthController {
 
         Usuario novoUsuario = new Usuario();
         try {
-            novoUsuario.setNome(registerRequest.nome());
+            novoUsuario.setNome(registerRequest.nome().trim());
             novoUsuario.setEmail(registerRequest.email());
             novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
             novoUsuario.setRole(registerRequest.role());

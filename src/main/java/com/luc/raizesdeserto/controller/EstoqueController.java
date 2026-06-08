@@ -4,6 +4,7 @@ import com.luc.raizesdeserto.domain.enums.MovimentacaoTipo;
 import com.luc.raizesdeserto.dto.estoque.EstoqueResponse;
 import com.luc.raizesdeserto.dto.estoque.MovimentacaoRequest;
 import com.luc.raizesdeserto.service.EstoqueService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class EstoqueController {
     }
 
     @PostMapping("movimentacao")
-    public ResponseEntity lancarMovimentacao(@RequestBody MovimentacaoRequest request){
+    public ResponseEntity lancarMovimentacao(@Valid @RequestBody MovimentacaoRequest request){
         switch (request.tipo()){
             case MovimentacaoTipo.ENTRADA:
                 estoqueService.creditar(request.produtoID(), request.unidadeId(), request.quantidade());

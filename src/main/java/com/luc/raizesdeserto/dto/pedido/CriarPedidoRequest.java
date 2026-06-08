@@ -22,10 +22,10 @@ import java.util.UUID;
 @Builder
 public record CriarPedidoRequest(
         @NotNull(message = "Id do Canal do Pedido é obrigatório.")
-        UUID canalPedidoId,
-
-        @NotNull(message = "Id do Canal do Pedido é obrigatório.")
         UUID unidadeId,
+
+        @NotNull(message = "Canal do Pedido é obrigatório.")
+        CanalPedido canalPedido,
 
         @NotEmpty(message = "O pedido deve conter pelo menos um item.")
         List<ItemPedidoRequest> itens,

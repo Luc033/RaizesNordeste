@@ -1,5 +1,6 @@
 package com.luc.raizesdeserto.dto.pedido;
 
+import com.luc.raizesdeserto.domain.entity.ItemPedido;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -12,4 +13,7 @@ public record ItemPedidoResponse(
         Integer quantidade,
         BigDecimal valorUnitario
 ) {
+    public ItemPedidoResponse(ItemPedido i){
+        this(i.getProduto().getId(), i.getProduto().getNome(), i.getQuantidade(), i.getProduto().getPrecoBase());
+    }
 }
