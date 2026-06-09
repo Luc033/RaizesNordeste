@@ -85,8 +85,8 @@ public class PagamentoService {
      *                                  não estiver com status {@code PENDENTE}
      */
     @Transactional
-    public void registrarRetorno(UUID pedidoId, Status statusPagamento, String payloadWebhook) {
-        var pedido = pedidoService.buscarPorId(pedidoId);
+    public void registrarRetorno(UUID pedidoId, StatusPagamento statusPagamento, String payloadWebhook) {
+        var pedido = Optional.ofNullable(pedidoService.buscarPorId(pedidoId));
 
         if(pedido.isEmpty()){
             throw new IllegalArgumentException("Pedido não encontrado: " + pedidoId);

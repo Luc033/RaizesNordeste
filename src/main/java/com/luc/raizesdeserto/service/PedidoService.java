@@ -109,7 +109,7 @@ public class PedidoService {
                 }
             }
             pedidoParaSalvar.setCanalPedido(novoPedido.getCanalPedido());
-            this.atualizarStatus(pedidoParaSalvar.getUsuario(), pedidoParaSalvar.getId(), Status.AGUARDANDO_PAGAMENTO, "Pedido criado.");
+            pedidoParaSalvar.setStatus(Status.AGUARDANDO_PAGAMENTO);
             pedidoParaSalvar.setValorTotal(valorTotal);
             pedidoParaSalvar.setUsuario(novoPedido.getUsuario());
             pedidoParaSalvar.setUnidade(novoPedido.getUnidade());
@@ -164,7 +164,7 @@ public class PedidoService {
     }
 
     public List<Pedido> listarPedidosPorCanal(CanalPedido canal){
-        return pedidoRepository.findByCanal(canal);
+        return pedidoRepository.findByCanalPedido(canal);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.luc.raizesdeserto.dto.pagamento;
 
 import com.luc.raizesdeserto.domain.enums.Status;
+import com.luc.raizesdeserto.domain.enums.StatusPagamento;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
@@ -11,7 +12,7 @@ public record PagamentoMockRequest(
         @NotNull(message = "pedidoId é obrigatório.")
         UUID pedidoId,
         @NotNull(message = "statusPagamento é obrigatório")
-        Status statusPagamento,
+        StatusPagamento statusPagamento,
         @NotNull(message = "payload é obrigatório")
         String payloadWebhook
 ) {
