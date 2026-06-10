@@ -25,13 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
-    /// NEXT STEP:
-    ///  * Implementar a classe AuthConfig antes de continuar.
-    ///  * Implementar a classe TokenConfig,bem como, o seu método gerarToken e validarToken.
-    ///  * Implementar a rota /register-cliente
-    ///  * Implementar a rota /register-funcionario
-
     private final AuthenticationManager authenticationManager;
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
@@ -56,42 +49,26 @@ public class AuthController {
 
     @PostMapping("/registrar-cliente")
     public ResponseEntity registrarCliente(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
-
-        if(!registerRequest.aceitouTermos()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Necessário aceitar os termos de uso.");
-        }
-
         Usuario novoUsuario = new Usuario();
-        try {
-            novoUsuario.setNome(registerRequest.nome().trim());
-            novoUsuario.setEmail(registerRequest.email());
-            novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
-            novoUsuario.setRole(Role.ROLE_CLIENTE);
-            usuarioService.incluirConsentimento(novoUsuario.getId(), request);
-            usuarioService.salvar(novoUsuario);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        novoUsuario.setNome(registerRequest.nome().trim());
+        novoUsuario.setEmail(registerRequest.email());
+        novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
+        novoUsuario.setRole(Role.ROLE_CLIENTE);
+        var usuarioSalvo = usuarioService.salvar(novoUsuario);
+        usuarioService.incluirConsentimento(usuarioSalvo.getId(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario.getNome(), novoUsuario.getEmail()));
     }
 
     @PostMapping("/registrar-funcionario")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity registrarFuncionario(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
-        if(!registerRequest.aceitouTermos()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Necessário aceitar os termos de uso.");
-        }
-
         Usuario novoUsuario = new Usuario();
-        try {
-            novoUsuario.setNome(registerRequest.nome().trim());
-            novoUsuario.setEmail(registerRequest.email());
-            novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
-            novoUsuario.setRole(registerRequest.role());
-            usuarioService.salvar(novoUsuario);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        novoUsuario.setNome(registerRequest.nome().trim());
+        novoUsuario.setEmail(registerRequest.email());
+        novoUsuario.setSenhaHash(passwordEncoder.encode(registerRequest.senha()));
+        novoUsuario.setRole(registerRequest.role());
+        var usuarioSalvo = usuarioService.salvar(novoUsuario);
+        usuarioService.incluirConsentimento(usuarioSalvo.getId(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario.getNome(), novoUsuario.getEmail()));
     }
 

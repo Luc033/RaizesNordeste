@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class PagamentoServiceTest {
 
-    // Substituímos o Repository pelo Service real que a sua classe usa
     @Mock
     private PedidoService pedidoService;
 

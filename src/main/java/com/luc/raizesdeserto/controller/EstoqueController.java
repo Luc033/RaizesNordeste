@@ -6,6 +6,7 @@ import com.luc.raizesdeserto.dto.estoque.MovimentacaoRequest;
 import com.luc.raizesdeserto.service.EstoqueService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,15 +22,13 @@ public class EstoqueController {
         this.estoqueService = estoqueService;
     }
 
-    // TODO:  GET   /estoque?unidadeId=
-    //        POST /estoque/movimentacao
-
     @GetMapping()
     public ResponseEntity<List<EstoqueResponse>> listarEstoquePorUnidade(@RequestParam UUID unidadeId) {
         var estoque = estoqueService.consultarPorUnidade(unidadeId).stream().map(e -> new EstoqueResponse(e)).toList();
         return ResponseEntity.ok().body(estoque);
     }
 
+    @PreAuthorize( "hasAnyRole('ADMIN', 'GERENTE')")
     @PostMapping("movimentacao")
     public ResponseEntity lancarMovimentacao(@Valid @RequestBody MovimentacaoRequest request){
         switch (request.tipo()){
