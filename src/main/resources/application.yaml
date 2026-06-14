@@ -21,3 +21,7 @@ gateway:
     mock:
       url-approved: "https://mocki.io/v1/896aa5b1-d85e-473e-b6a4-7a192a2533e2"
       url-denied: "https://mocki.io/v1/c83123b7-a25a-490e-ac96-6182885755aa"
+
+logging:
+  file:
+    name: "raizes-deserto.log"

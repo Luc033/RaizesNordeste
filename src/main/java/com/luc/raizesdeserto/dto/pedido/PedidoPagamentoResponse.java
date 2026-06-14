@@ -10,18 +10,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
-
 @Builder
-public record PedidoResponse(
+public record PedidoPagamentoResponse(
     UUID pedidoId,
     Status status,
     CanalPedido canal,
     BigDecimal valorTotal,
     List<ItemPedidoResponse> itens,
+    String infoPagamento,
     LocalDateTime criadoEm
 ) {
-    public PedidoResponse(Pedido p){
-        this(p.getId(), p.getStatus(), p.getCanalPedido(), p.getValorTotal(), p.getItens().stream().map(i -> new ItemPedidoResponse(i)).toList(),  p.getCriadoEm());
+    public PedidoPagamentoResponse(Pedido p, String infoPagamento ){
+        this(p.getId(), p.getStatus(), p.getCanalPedido(), p.getValorTotal(), p.getItens().stream().map(i -> new ItemPedidoResponse(i)).toList(), infoPagamento,  p.getCriadoEm());
     }
 }

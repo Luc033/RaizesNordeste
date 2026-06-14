@@ -50,8 +50,9 @@ public class Pagamento {
     @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
-    public Pagamento(FormaPagamento formaPagamento, StatusPagamento statusPagamento) {
+    public Pagamento(FormaPagamento formaPagamento, StatusPagamento statusPagamento, Pedido pedido) {
         this.formaPagamento = formaPagamento;
         this.statusPagamento = statusPagamento;
+        this.pedido = pedido;
     }
 }

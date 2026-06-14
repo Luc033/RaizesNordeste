@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,16 +40,18 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
         Authentication authentication = authenticationManager.authenticate(userAndPass);
         Usuario usuario = (Usuario) authentication.getPrincipal();
         String token = tokenConfig.gerarToken(usuario);
-        return ResponseEntity.ok(new LoginResponse(token));
+        Long expiresIn = 86400L;
+
+        return ResponseEntity.ok(new LoginResponse(token, expiresIn));
     }
 
     @PostMapping("/registrar-cliente")
-    public ResponseEntity registrarCliente(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
+    public ResponseEntity<RegisterResponse> registrarCliente(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(registerRequest.nome().trim());
         novoUsuario.setEmail(registerRequest.email());
@@ -56,12 +59,12 @@ public class AuthController {
         novoUsuario.setRole(Role.ROLE_CLIENTE);
         var usuarioSalvo = usuarioService.salvar(novoUsuario);
         usuarioService.incluirConsentimento(usuarioSalvo.getId(), request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario.getNome(), novoUsuario.getEmail()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario));
     }
 
     @PostMapping("/registrar-funcionario")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity registrarFuncionario(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
+    public ResponseEntity<RegisterResponse> registrarFuncionario(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(registerRequest.nome().trim());
         novoUsuario.setEmail(registerRequest.email());
@@ -69,7 +72,6 @@ public class AuthController {
         novoUsuario.setRole(registerRequest.role());
         var usuarioSalvo = usuarioService.salvar(novoUsuario);
         usuarioService.incluirConsentimento(usuarioSalvo.getId(), request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario.getNome(), novoUsuario.getEmail()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(novoUsuario));
     }
-
 }

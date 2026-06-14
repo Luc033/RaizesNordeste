@@ -30,7 +30,7 @@ public record CriarPedidoRequest(
         @NotEmpty(message = "O pedido deve conter pelo menos um item.")
         List<ItemPedidoRequest> itens,
 
-        @NotBlank(message = "Forma de pagamento é obrigatória.")
+        @NotNull(message = "Forma de pagamento é obrigatória.")
         FormaPagamento formaPagamento
 ) {
 }

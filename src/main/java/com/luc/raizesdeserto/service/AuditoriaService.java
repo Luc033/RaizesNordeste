@@ -8,7 +8,9 @@ import com.luc.raizesdeserto.repository.LogStatusPedidoRepository;
 import com.luc.raizesdeserto.repository.PedidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -28,13 +30,14 @@ public class AuditoriaService {
      * estado do pedido, o usuário responsável pela mudança e uma observação opcional,
      * permitindo rastrear todo o ciclo de vida do pedido.
      *
-     * @param pedido      o pedido cujo status foi alterado
-     * @param usuario     o usuário responsável pela transição de status
+     * @param pedido       o pedido cujo status foi alterado
+     * @param usuario      o usuário responsável pela transição de status
      * @param statusAntigo o status em que o pedido se encontrava antes da alteração
-     * @param novoStatus  o novo status atribuído ao pedido
-     * @param observacao  comentário ou justificativa sobre a mudança de status; pode ser {@code null}
+     * @param novoStatus   o novo status atribuído ao pedido
+     * @param observacao   comentário ou justificativa sobre a mudança de status; pode ser {@code null}
      */
-    public void registrarTransicao(Pedido pedido, Usuario usuario, Status statusAntigo, Status novoStatus, String observacao){
+    @Transactional
+    public void registrarTransicao(Pedido pedido, Usuario usuario, Status statusAntigo, Status novoStatus, String observacao) {
         LogStatusPedido log = new LogStatusPedido();
         log.setPedido(pedido);
         log.setUsuarioResponsavel(usuario);
@@ -43,6 +46,4 @@ public class AuditoriaService {
         log.setObservacao(observacao);
         logStatusPedidoRepository.save(log);
     }
-
-
 }

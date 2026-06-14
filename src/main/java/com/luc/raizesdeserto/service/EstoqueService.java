@@ -6,6 +6,7 @@ import com.luc.raizesdeserto.domain.entity.Unidade;
 import com.luc.raizesdeserto.repository.EstoqueRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,52 +34,71 @@ public class EstoqueService {
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado no estoque desta unidade.")));
     }
 
+    @Transactional
     public void debitar(UUID produtoId, UUID unidadeId, int quantidade) {
-        Optional<Produto> produto = Optional.ofNullable(produtoService.buscarPorId(produtoId));
-        Optional<Unidade> unidade = Optional.ofNullable(unidadeService.buscarPorId(unidadeId));
-
-        if (produto.isPresent() && unidade.isPresent()) {
-            Estoque estoque = new Estoque();
-            estoque.setProduto(produto.get());
-            estoque.setUnidade(unidade.get());
-
-            // [[ O PRIMEIRO METODO PODE RETORNA NULL POIS UNIDADE OU PRODUTO PODE NÃO EXISTIR ]]
-            // Se a quantidade atual for menor que a quantidade a ser debitada, retorna erro
-            if (this.consultarItemEspecifico(unidadeId, produtoId).get().getQuantidadeAtual() >= quantidade) {
-                estoque.setQuantidadeAtual(quantidade);
-                estoqueRepository.save(estoque);
-            } else {
-                // retorna o erro de que a quantidade a debitar é maior do que o saldo atual em estoque
-                throw new IllegalArgumentException("Quantidade a debitar é maior do que o saldo atual em estoque.");
-
-            }
-        } else {
-            // retorna o erro informando que produtoId e/ou unidadeId são obrigatórios
-            throw new EntityNotFoundException("Produto ID e/ou Unidade ID não encontrados.");
+        // validação básica de entrada
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("A quantidade a debitar deve ser maior que zero.");
         }
+
+        // busca o estoque existente
+        Estoque estoque = this.consultarItemEspecifico(unidadeId, produtoId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("Estoque não encontrado para o Produto %s e Unidade %s.", produtoId, unidadeId)
+                ));
+
+        // verifica se tem saldo suficiente
+        if (estoque.getQuantidadeAtual() < quantidade) {
+            throw new IllegalArgumentException(
+                    String.format("Quantidade a debitar (%d) é maior do que o saldo atual em estoque (%d).",
+                            quantidade, estoque.getQuantidadeAtual())
+            );
+        }
+
+        // subtrai o valor e salva
+        int novoSaldo = estoque.getQuantidadeAtual() - quantidade;
+        estoque.setQuantidadeAtual(novoSaldo);
+
+        estoqueRepository.save(estoque);
     }
 
+
+    @Transactional
     public void creditar(UUID produtoId, UUID unidadeId, int quantidade) {
-        Optional<Produto> produto = Optional.ofNullable(produtoService.buscarPorId(produtoId));
-        Optional<Unidade> unidade = Optional.ofNullable(unidadeService.buscarPorId(unidadeId));
-
-        if (produto.isPresent() && unidade.isPresent()) {
-            Estoque estoque = new Estoque();
-            estoque.setProduto(produto.get());
-            estoque.setUnidade(unidade.get());
-
-            // Valida se a quantidade a creditar for menor ou igual a zero
-            if (this.consultarItemEspecifico(unidadeId, produtoId).get().getQuantidadeAtual() > 0) {
-                estoque.setQuantidadeAtual(quantidade);
-                estoqueRepository.save(estoque);
-            } else {
-                // retorna o erro de que a quantidade a creditar é inválida
-                throw new IllegalArgumentException("Quantidade a creditar não pode ser menor ou igual a zero.");
-
-            }
-        } else {
-            // retorna o erro informando que produtoId e/ou unidadeId são obrigatórios
-            throw new EntityNotFoundException("Produto ID e/ou Unidade ID não encontrados.");
+        // validação básica de entrada
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("A quantidade a creditar deve ser maior que zero.");
         }
+
+        // tenta buscar o estoque
+        Optional<Estoque> estoqueOptional = this.consultarItemEspecifico(unidadeId, produtoId);
+
+        Estoque estoque;
+
+        if (estoqueOptional.isPresent()) {
+            // CENÁRIO A: O registro de estoque já existe
+            estoque = estoqueOptional.get();
+
+            // apenas somamos o valor ao saldo atual
+            int novoSaldo = estoque.getQuantidadeAtual() + quantidade;
+            estoque.setQuantidadeAtual(novoSaldo);
+        } else {
+            // CENÁRIO B: O registro de estoque não existe na unidade
+
+            // buscando as entidades para fazer o vínculo
+            Produto produto = produtoService.buscarPorId(produtoId);
+            Unidade unidade = unidadeService.buscarPorId(unidadeId);
+
+            // valida se produto/unidade existem
+            if (produto == null || unidade == null) {
+                throw new EntityNotFoundException(String.format("Produto ID (%s) e/ou Unidade ID (%s) não encontrados.", produtoId, unidadeId));
+            }
+
+            estoque = new Estoque();
+            estoque.setProduto(produto);
+            estoque.setUnidade(unidade);
+            estoque.setQuantidadeAtual(quantidade);
+        }
+        estoqueRepository.save(estoque);
     }
 }

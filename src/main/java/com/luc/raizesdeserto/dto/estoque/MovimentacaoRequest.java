@@ -8,17 +8,17 @@ import jakarta.validation.constraints.Positive;
 import java.util.UUID;
 
 public record MovimentacaoRequest(
-        @NotNull(message = "ID do produto não pode ser nulo.")
+        @NotNull(message = "ID do produto é obrigatório.")
         UUID produtoID,
 
-        @NotNull(message = "ID da unidade não pode ser nulo.")
+        @NotNull(message = "ID da unidade é obrigatório.")
         UUID unidadeId,
 
-        @Positive(message = "Quantidade deve ser maior que zero.")
+        @Positive(message = "Quantidade é obrigatória e deve ser maior que zero.")
         @NotNull(message = "Quantidade não pode ser nula.")
         Integer quantidade,
 
-        @NotBlank(message = "Tipo de movimentação não pode ser nulo.")
+        @NotBlank(message = "Tipo de movimentação é obrigatório.")
         MovimentacaoTipo tipo
 ) {
 }

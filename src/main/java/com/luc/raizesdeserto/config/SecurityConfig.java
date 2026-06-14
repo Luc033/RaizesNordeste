@@ -35,11 +35,16 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(a -> a
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                        .anyRequest().permitAll())
-//                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/auth/registrar-cliente").permitAll()
-//                        .anyRequest().authenticated())
-    //            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+//                        .anyRequest().permitAll())
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/registrar-cliente").permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

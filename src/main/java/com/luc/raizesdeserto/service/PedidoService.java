@@ -69,7 +69,7 @@ public class PedidoService {
 
             // Verifica se o usuário foi informado no pedido corretamente
             if( novoPedido.getUsuario() == null || usuarioService.buscarPorId(novoPedido.getUsuario().getId()).isEmpty()) {
-                throw new IllegalArgumentException("Usuário nulo ou inválido: " + novoPedido.getUsuario());
+                throw new IllegalArgumentException("Usuário inexistente ou inválido: " + novoPedido.getUsuario());
             }
 
             Pedido pedidoParaSalvar = new Pedido();
@@ -88,7 +88,8 @@ public class PedidoService {
                 }
 
                 // Verifica se o item possui estoque disponível
-                var itemEstoque = estoqueService.consultarItemEspecifico(item.getPedido().getUnidade().getId(), item.getProduto().getId());
+                var unidade = novoPedido.getUnidade().getId();
+                var itemEstoque = estoqueService.consultarItemEspecifico(unidade, item.getProduto().getId());
                 if (itemEstoque.isPresent()) {
                     // o produto existe nessa unidade, necessário validar estoque agora
                     if (item.getQuantidade() <= itemEstoque.get().getQuantidadeAtual()) {
@@ -96,13 +97,15 @@ public class PedidoService {
                         ItemPedido itemPedido = new ItemPedido();
                         itemPedido.setPrecoUnitario(itemEstoque.get().getProduto().getPrecoBase());
                         itemPedido.setQuantidade(item.getQuantidade());
+                        itemPedido.setProduto(itemEstoque.get().getProduto());
+                        itemPedido.setPedido(pedidoParaSalvar);
                         pedidoParaSalvar.getItens().add(itemPedido);
-                        estoqueService.debitar(item.getProduto().getId(), item.getPedido().getUnidade().getId(), item.getQuantidade());
+                        estoqueService.debitar(item.getProduto().getId(), unidade, item.getQuantidade());
                         valorTotal = valorTotal.add(itemEstoque.get().getProduto().getPrecoBase().multiply(BigDecimal.valueOf(item.getQuantidade())));
                     } else {
                         // retornar erro, estoque insuficiente
-                        throw new IllegalArgumentException("Estoque insuficiente: " + item.getProduto().getNome() + " - qtd: " + item.getQuantidade());
-                    }
+                        throw new IllegalArgumentException("Estoque insuficiente no item [%d]: %s (%s) - Qtd pedida: %d"
+                                .formatted(i + 1, itemEstoque.get().getProduto().getNome(), itemEstoque.get().getProduto().getId(), item.getQuantidade()));                    }
                 } else {
                     // Retorna erro pois o produto id ou unidade id não existe
                     throw new EntityNotFoundException(String.format("Produto (%s) e/ou Unidade (%s) não encontrados.", item.getProduto().getId(), item.getPedido().getUnidade().getId()));
@@ -113,9 +116,10 @@ public class PedidoService {
             pedidoParaSalvar.setValorTotal(valorTotal);
             pedidoParaSalvar.setUsuario(novoPedido.getUsuario());
             pedidoParaSalvar.setUnidade(novoPedido.getUnidade());
-            pedidoParaSalvar.setPagamento(new Pagamento(novoPedido.getPagamento().getFormaPagamento(), StatusPagamento.PENDENTE));
+            pedidoParaSalvar.setPagamento(new Pagamento(novoPedido.getPagamento().getFormaPagamento(), StatusPagamento.PENDENTE, pedidoParaSalvar));
+            var pedidoSalvo = pedidoRepository.save(pedidoParaSalvar);
             auditoriaService.registrarTransicao(pedidoParaSalvar, pedidoParaSalvar.getUsuario(), null, Status.AGUARDANDO_PAGAMENTO, "Pedido criado.");
-            return pedidoRepository.save(pedidoParaSalvar);
+            return pedidoSalvo;
         } else {
             // Retorna que o canal do novoPedido é inválido - 400 Bad Request
             throw new IllegalArgumentException("Canal de novoPedido inválido: " + novoPedido.getCanalPedido());

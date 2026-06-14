@@ -65,14 +65,7 @@ public class UsuarioService {
     }
 
     public Optional<Usuario> buscarPorEmail(String email) {
-        Optional<Usuario> usuarioEncontrado;
-
-        try {
-            usuarioEncontrado = Optional.of(usuarioRepository.findUsuarioByEmail(email).orElseThrow());
-        } catch (NoSuchElementException e) {
-            throw e;
-        }
-        return usuarioEncontrado;
+            return usuarioRepository.findUsuarioByEmail(email);
     }
 
     public Optional<Usuario> buscarPorId(UUID id) {
@@ -101,4 +94,12 @@ public class UsuarioService {
     }
 
 
+    public void excluirUsuario(UUID id) {
+        var usuarioEncontrado = this.usuarioRepository.findById(id);
+        if (usuarioEncontrado.isPresent()) {
+            this.usuarioRepository.delete(usuarioEncontrado.get());
+        }else {
+            throw new EntityNotFoundException("Usuário não encontrado: "+id);
+        }
+    }
 }

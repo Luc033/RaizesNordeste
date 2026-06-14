@@ -1,9 +1,12 @@
 package com.luc.raizesdeserto.service;
 
 import com.luc.raizesdeserto.domain.entity.Produto;
+import com.luc.raizesdeserto.domain.entity.Usuario;
+import com.luc.raizesdeserto.dto.produto.ProdutoRequest;
 import com.luc.raizesdeserto.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,14 +15,39 @@ import java.util.UUID;
 @Service
 public class ProdutoService {
     private final ProdutoRepository produtoRepository;
+    private final AuditoriaService auditoriaService;
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
+    public ProdutoService(ProdutoRepository produtoRepository, AuditoriaService auditoriaService) {
         this.produtoRepository = produtoRepository;
+        this.auditoriaService = auditoriaService;
     }
 
 
-    public void salvar(Produto produto){
-        this.produtoRepository.save(produto);
+    @Transactional
+    public Produto salvar(Produto produto) {
+        return produtoRepository.save(produto);
+    }
+
+    @Transactional
+    public Produto atualizar(UUID id, ProdutoRequest request) {
+        Produto produtoExistente = produtoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado com o ID: " + id));
+
+        produtoExistente.setNome(request.nome().trim());
+        produtoExistente.setDescricao(request.descricao());
+        produtoExistente.setPrecoBase(request.precoBase());
+        produtoExistente.setCategoria(request.categoria());
+        produtoExistente.setSazonal(request.sazonal());
+
+        return produtoRepository.save(produtoExistente);
+    }
+
+    @Transactional
+    public void deletar(UUID id) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado com o ID: " + id));
+
+        produtoRepository.delete(produto);
     }
 
     public Produto buscarPorId(UUID id){
