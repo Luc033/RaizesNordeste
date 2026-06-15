@@ -2,6 +2,7 @@ package com.luc.raizesdeserto;
 
 import com.luc.raizesdeserto.domain.entity.*;
 import com.luc.raizesdeserto.domain.enums.* ;
+import com.luc.raizesdeserto.dto.pagamento.PagamentoMockRequest;
 import com.luc.raizesdeserto.repository.PagamentoRepository;
 import com.luc.raizesdeserto.service.*;
 import org.junit.jupiter.api.DisplayName;
@@ -42,10 +43,16 @@ class PagamentoServiceTest {
 
         // Quando o PagamentoService pedir o pedido para o PedidoService, será devolvido o pedido fake
         when(pedidoService.buscarPorId(pedidoId)).thenReturn(pedidoFake);
+        PagamentoMockRequest mockRequest = PagamentoMockRequest.builder()
+                .pedidoId(pedidoId)
+                .statusPagamento(StatusPagamento.APROVADO)
+                .payloadWebhook("Payload")
+                .build();
+
 
         IllegalArgumentException excecao = assertThrows(
                 IllegalArgumentException.class,
-                () -> pagamentoService.registrarRetorno(pedidoId, StatusPagamento.APROVADO, "Payload")
+                () -> pagamentoService.registrarRetorno(mockRequest)
         );
 
         // Verifica se o metódo capturou o erro e retornou mensagem corretamente

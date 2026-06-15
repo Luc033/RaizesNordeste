@@ -4,10 +4,14 @@ import com.luc.raizesdeserto.domain.entity.Estoque;
 import com.luc.raizesdeserto.domain.entity.ItemPedido;
 import com.luc.raizesdeserto.domain.entity.Pagamento;
 import com.luc.raizesdeserto.domain.entity.Pedido;
+import com.luc.raizesdeserto.domain.enums.FormaPagamento;
 import com.luc.raizesdeserto.domain.enums.Status;
 import com.luc.raizesdeserto.domain.enums.StatusPagamento;
+import com.luc.raizesdeserto.dto.pagamento.PagamentoMockRequest;
+import com.luc.raizesdeserto.dto.pagamento.PagamentoResponse;
 import com.luc.raizesdeserto.repository.PagamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,30 +41,24 @@ public class PagamentoService {
      * <p>Valida se o pedido existe e se está com o status {@code AGUARDANDO_PAGAMENTO} antes
      * de registrar os dados do gateway e retornar um link de pagamento falso para fins de teste.
      *
-     * @param pedidoId identificador único do pedido a ser processado
+     * @param pedido pedido a ser pago
      * @return link fictício de pagamento gerado pelo mock do gateway
      * @throws EntityNotFoundException  se nenhum pedido for encontrado com o {@code pedidoId} informado
      * @throws IllegalArgumentException se o pedido existir, mas seu status não for {@code AGUARDANDO_PAGAMENTO}
      */
     @Transactional
-    public String solicitarMock(UUID pedidoId) {
-        Optional<Pedido> pedido = Optional.ofNullable(pedidoService.buscarPorId(pedidoId));
-
-        // Valida se o pedido existe
-        if (pedido.isEmpty()) {
-            throw new EntityNotFoundException("Pedido não encontrado: " + pedidoId);
-        }
-
+    public String solicitarMock(Pedido pedido) {
         // Valida se o status do pedido está na situação própria para realizar o pagamento
-        if (!pedido.get().getStatus().equals(Status.AGUARDANDO_PAGAMENTO)) {
+        if (!pedido.getStatus().equals(Status.AGUARDANDO_PAGAMENTO)) {
             throw new IllegalArgumentException("Pedido não está apto para realizar o pagamento. Status atual: " +
-                    pedido.get().getStatus() + "");
+                    pedido.getStatus() + "");
         }
 
-        Pagamento pagamento = pedido.get().getPagamento();
-        String mock = "MOCK_GATEWAY";
-        String linkFalso = "https://pagamento-mock.com.br/pay/123";
-        pagamento.setGatewayPagamento(mock);
+        Pagamento pagamento = pedido.getPagamento();
+
+        String linkFalso = "https://pagamento-mock.com.br/pay/" + pedido.getId();
+
+        pagamento.setGatewayPagamento("MOCK_GATEWAY");
         pagamento.setSolicitadoEm(LocalDateTime.now());
         pagamentoRepository.save(pagamento);
 
@@ -76,40 +74,36 @@ public class PagamentoService {
      * para o status {@code EM_PREPARO}. Caso seja {@code RECUSADO}, apenas o payload e a
      * data de confirmação são registrados, sem alteração no status do pedido.
      *
-     * @param pedidoId        identificador único do pedido a ser atualizado
-     * @param statusPagamento status retornado pelo gateway de pagamento
-     *                        ({@code APROVADO} ou {@code RECUSADO})
-     * @param payloadWebhook  corpo bruto da notificação recebida do gateway, armazenado
-     *                        para fins de rastreabilidade e auditoria
+     * @param request        do tipo PagamentoMockRequest.
      * @throws IllegalArgumentException se o pedido não for encontrado ou se o pagamento
      *                                  não estiver com status {@code PENDENTE}
      */
     @Transactional
-    public void registrarRetorno(UUID pedidoId, StatusPagamento statusPagamento, String payloadWebhook) {
-        var pedido = Optional.ofNullable(pedidoService.buscarPorId(pedidoId));
+    public void registrarRetorno(PagamentoMockRequest request) {
+        var pedidoId = request.pedidoId();
+        var statusPagamento = request.statusPagamento();
+        var payloadWebhook = request.payload();
+        var pedido = pedidoService.buscarPorId(pedidoId);
 
-        if(pedido.isEmpty()){
-            throw new IllegalArgumentException("Pedido não encontrado: " + pedidoId);
+        if(!pedido.getPagamento().getStatusPagamento().equals(StatusPagamento.PENDENTE)){
+            throw new IllegalArgumentException("Não é possível registrar o retorno do pagamento. Status atual: " + pedido.getPagamento().getStatusPagamento() + "");
         }
-        if(!pedido.get().getPagamento().getStatusPagamento().equals(StatusPagamento.PENDENTE)){
-            throw new IllegalArgumentException("Não é possível registrar o retorno do pagamento. Status atual: " + pedido.get().getPagamento().getStatusPagamento() + "");
-        }
+
+
 
         if(statusPagamento.equals(StatusPagamento.APROVADO)){
-            pedido.get().getPagamento().setConfirmadoEm(LocalDateTime.now());
-            pedido.get().getPagamento().setPayloadRetorno(payloadWebhook);
-            pedido.get().setStatus(Status.EM_PREPARO);
+            pedido.getPagamento().setConfirmadoEm(LocalDateTime.now());
+            pedido.getPagamento().setPayloadRetorno(payloadWebhook);
+            pedido.setStatus(Status.EM_PREPARO);
             pedidoService.atualizarStatus(null, pedidoId, Status.EM_PREPARO, "Pedido aprovado pelo gateway.");
-            pedido.get().getPagamento().setStatusPagamento(StatusPagamento.APROVADO);
+            pedido.getPagamento().setStatusPagamento(StatusPagamento.APROVADO);
         }else if(statusPagamento.equals(StatusPagamento.RECUSADO)){
-            pedido.get().getPagamento().setConfirmadoEm(LocalDateTime.now());
-            pedido.get().getPagamento().setPayloadRetorno(payloadWebhook);
+            pedido.getPagamento().setConfirmadoEm(LocalDateTime.now());
+            pedido.getPagamento().setPayloadRetorno(payloadWebhook);
 
         }
 
     }
-
-
 
     /**
      * Verifica e processa pedidos com timeout de pagamento.

@@ -9,11 +9,13 @@ import com.luc.raizesdeserto.dto.pedido.CriarPedidoRequest;
 import com.luc.raizesdeserto.dto.pedido.PedidoPagamentoResponse;
 import com.luc.raizesdeserto.dto.pedido.PedidoResponse;
 import com.luc.raizesdeserto.infra.GatewayPagamentoClient;
+import com.luc.raizesdeserto.service.PagamentoService;
 import com.luc.raizesdeserto.service.PedidoService;
 import com.luc.raizesdeserto.service.UnidadeService;
 import com.luc.raizesdeserto.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,54 +30,42 @@ public class PedidoController {
     private final UnidadeService unidadeService;
     private final UsuarioService usuarioService;
     private final GatewayPagamentoClient pagamentoClient;
+    private final PagamentoService pagamentoService;
 
 
-    public PedidoController(PedidoService pedidoService, UnidadeService unidadeService, UsuarioService usuarioService, GatewayPagamentoClient pagamentoClient) {
+    public PedidoController(PedidoService pedidoService, UnidadeService unidadeService, UsuarioService usuarioService, GatewayPagamentoClient pagamentoClient, PagamentoService pagamentoService) {
         this.pedidoService = pedidoService;
         this.unidadeService = unidadeService;
         this.usuarioService = usuarioService;
         this.pagamentoClient = pagamentoClient;
+        this.pagamentoService = pagamentoService;
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ATENDENTE')")
     public ResponseEntity<PedidoPagamentoResponse> criarPedido(@Valid @RequestBody CriarPedidoRequest request,
                                                                @AuthenticationPrincipal JWTUserData usuario){
         Pagamento pagamento = new Pagamento();
         pagamento.setFormaPagamento(request.formaPagamento());
         Pedido pedido = new Pedido();
-        List<ItemPedido> itens = new ArrayList<>(request.itens().stream().map(i -> new ItemPedido(new Produto(i.produtoId()), i.quantidade())).toList());
+        List<ItemPedido> itens = new ArrayList<>(request.itens().stream()
+                .map(i -> new ItemPedido(new Produto(i.produtoId()), i.quantidade())).toList());
         pedido.setUnidade(unidadeService.buscarPorId(request.unidadeId()));
         pedido.setCanalPedido(request.canalPedido());
         pedido.adicionarItens(itens);
         pedido.setUsuario(usuarioService.buscarPorId(usuario.id()).get());
         pedido.setPagamento(pagamento);
+
+
+        // pedido criado
         var pedidoSalvo = pedidoService.criarPedido(pedido);
 
-        String infoPagamento = null;
-        if(pedidoSalvo.getPagamento().getFormaPagamento().equals(FormaPagamento.DINHEIRO)){
-            infoPagamento = "Pagamento será realizado no momento da entrega/retirada. Separe o valor exato ou informe a necessidade de troco.";
-        }else{
-            String payloadGateway = String.format(
-                    "{\"pedidoId\": \"%s\", \"valorTotal\": %s}",
-                    pedidoSalvo.getId(),
-                    pedidoSalvo.getValorTotal()
-            );
+        // envia o pedido para o gateway de pagamento e o mesmo retorna o link de pagamento
+        var response = pagamentoClient.enviarSolicitacaoPagamentoMock(pedidoSalvo);
 
-            //dispara a requisição para o gateway MOCK
-            String respostaGateway = pagamentoClient.enviarSolicitacaoPagamentoMock(payloadGateway, false);
+        // retorna ao cliente o pedido criado junto do link de pagamento
+        return ResponseEntity.ok().body(new PedidoPagamentoResponse(pedidoSalvo, response)) ;
 
-            switch (pedidoSalvo.getPagamento().getFormaPagamento()){
-                case PIX:
-                    infoPagamento = "Pix: " + respostaGateway;
-            }
-            System.out.printf("Integração de pagamento: resposta do Gateway: %s", respostaGateway);
-        }
-
-        // pensando em incluir links novos no mock.io para ele retornar a estrutura correta de pagamento para os tipos de pagamento criados.
-        // então, da forma que será a forma de pagamento do pedido atual, vou fazer um switch case para enviar a solicição para o gateway e retornar os dados (em cada em case) de forma personalizada,
-        // retornar somente os dados necessário para pagamento para a aquela forma de pagamento específica contempla
-
-        return ResponseEntity.ok().body(new PedidoPagamentoResponse(pedidoSalvo, infoPagamento)) ;
 
     }
 

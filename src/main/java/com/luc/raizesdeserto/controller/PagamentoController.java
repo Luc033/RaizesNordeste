@@ -1,7 +1,7 @@
 package com.luc.raizesdeserto.controller;
 
+import com.luc.raizesdeserto.domain.enums.StatusPagamento;
 import com.luc.raizesdeserto.dto.pagamento.PagamentoMockRequest;
-import com.luc.raizesdeserto.dto.pagamento.PagamentoResponse;
 import com.luc.raizesdeserto.service.PagamentoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +24,8 @@ public class PagamentoController {
     public ResponseEntity<Void> processarRetornoPagamento(
             @Valid @RequestBody PagamentoMockRequest request
             ){
-        pagamentoService.registrarRetorno(request.pedidoId(), request.statusPagamento(), request.payloadWebhook());
+        pagamentoService.registrarRetorno(request);
         return ResponseEntity.ok().build();
     }
 
 }
-
