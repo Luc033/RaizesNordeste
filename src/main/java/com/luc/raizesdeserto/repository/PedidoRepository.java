@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface PedidoRepository   extends JpaRepository<Pedido, UUID> {
 
-    List<Pedido> findByStatusAndCriadoEmAfter(Status status, LocalDateTime desde);
+    List<Pedido> findByStatusAndCriadoEmIsBefore(Status status, LocalDateTime desde);
     List<Pedido> findByCanalPedido(CanalPedido canal);
 
 }

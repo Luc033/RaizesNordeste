@@ -4,21 +4,17 @@ import com.luc.raizesdeserto.domain.entity.Estoque;
 import com.luc.raizesdeserto.domain.entity.ItemPedido;
 import com.luc.raizesdeserto.domain.entity.Pagamento;
 import com.luc.raizesdeserto.domain.entity.Pedido;
-import com.luc.raizesdeserto.domain.enums.FormaPagamento;
 import com.luc.raizesdeserto.domain.enums.Status;
 import com.luc.raizesdeserto.domain.enums.StatusPagamento;
 import com.luc.raizesdeserto.dto.pagamento.PagamentoMockRequest;
-import com.luc.raizesdeserto.dto.pagamento.PagamentoResponse;
 import com.luc.raizesdeserto.repository.PagamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class PagamentoService {
@@ -82,7 +78,6 @@ public class PagamentoService {
     public void registrarRetorno(PagamentoMockRequest request) {
         var pedidoId = request.pedidoId();
         var statusPagamento = request.statusPagamento();
-        var payloadWebhook = request.payload();
         var pedido = pedidoService.buscarPorId(pedidoId);
 
         if(!pedido.getPagamento().getStatusPagamento().equals(StatusPagamento.PENDENTE)){
@@ -93,13 +88,13 @@ public class PagamentoService {
 
         if(statusPagamento.equals(StatusPagamento.APROVADO)){
             pedido.getPagamento().setConfirmadoEm(LocalDateTime.now());
-            pedido.getPagamento().setPayloadRetorno(payloadWebhook);
+            pedido.getPagamento().setPayloadRetorno(request.toString());
             pedido.setStatus(Status.EM_PREPARO);
             pedidoService.atualizarStatus(null, pedidoId, Status.EM_PREPARO, "Pedido aprovado pelo gateway.");
             pedido.getPagamento().setStatusPagamento(StatusPagamento.APROVADO);
         }else if(statusPagamento.equals(StatusPagamento.RECUSADO)){
             pedido.getPagamento().setConfirmadoEm(LocalDateTime.now());
-            pedido.getPagamento().setPayloadRetorno(payloadWebhook);
+            pedido.getPagamento().setPayloadRetorno(request.toString());
 
         }
 

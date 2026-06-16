@@ -164,7 +164,7 @@ public class PedidoService {
     }
 
     public List<Pedido> listarPedidosAguardandoPagamento(){
-        return pedidoRepository.findByStatusAndCriadoEmAfter(Status.AGUARDANDO_PAGAMENTO, LocalDateTime.now().minusMinutes(10));
+        return pedidoRepository.findByStatusAndCriadoEmIsBefore(Status.AGUARDANDO_PAGAMENTO, LocalDateTime.now().minusMinutes(10));
     }
 
     public List<Pedido> listarPedidosPorCanal(CanalPedido canal){

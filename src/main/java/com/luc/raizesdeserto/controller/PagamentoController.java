@@ -1,6 +1,5 @@
 package com.luc.raizesdeserto.controller;
 
-import com.luc.raizesdeserto.domain.enums.StatusPagamento;
 import com.luc.raizesdeserto.dto.pagamento.PagamentoMockRequest;
 import com.luc.raizesdeserto.service.PagamentoService;
 import jakarta.validation.Valid;

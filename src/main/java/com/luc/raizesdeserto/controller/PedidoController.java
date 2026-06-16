@@ -74,6 +74,7 @@ public class PedidoController {
         return pedidoService.buscarPorId(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_GERENTE', 'ROLE_COZINHA', 'ROLE_ATENDENTE')")
     @PatchMapping("{id}/status")
     public ResponseEntity<PedidoResponse> atualizarStatus(@PathVariable UUID id,
                                                           @Valid @RequestBody AtualizarStatusRequest request,

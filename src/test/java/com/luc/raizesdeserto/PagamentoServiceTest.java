@@ -1,10 +1,11 @@
 package com.luc.raizesdeserto;
 
-import com.luc.raizesdeserto.domain.entity.*;
-import com.luc.raizesdeserto.domain.enums.* ;
+import com.luc.raizesdeserto.domain.entity.Pagamento;
+import com.luc.raizesdeserto.domain.entity.Pedido;
+import com.luc.raizesdeserto.domain.enums.StatusPagamento;
 import com.luc.raizesdeserto.dto.pagamento.PagamentoMockRequest;
-import com.luc.raizesdeserto.repository.PagamentoRepository;
-import com.luc.raizesdeserto.service.*;
+import com.luc.raizesdeserto.service.PagamentoService;
+import com.luc.raizesdeserto.service.PedidoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,10 +44,10 @@ class PagamentoServiceTest {
 
         // Quando o PagamentoService pedir o pedido para o PedidoService, será devolvido o pedido fake
         when(pedidoService.buscarPorId(pedidoId)).thenReturn(pedidoFake);
-        PagamentoMockRequest mockRequest = PagamentoMockRequest.builder()
+            PagamentoMockRequest mockRequest = PagamentoMockRequest.builder()
                 .pedidoId(pedidoId)
                 .statusPagamento(StatusPagamento.APROVADO)
-                .payloadWebhook("Payload")
+                .dateCreated(LocalDateTime.now())
                 .build();
 
 
