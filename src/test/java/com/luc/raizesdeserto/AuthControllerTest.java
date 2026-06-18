@@ -69,3 +69,19 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.details[0].issue").exists());
     }
 }
+
+/*
+Olá, chat, boa noite.
+Criei um mvp de uma api para criação de pedidos de venda de um restaurante, onde o cliente consegue cadastrar, fazer um pedido (que será validado), e os fucnionário do restaurante (cozinha) prepara o pedido e muda a situação para 'pronto',
+
+O pedido possui um mock de pagamento para confirmação de pagamento
+
+Terminei todo o mvp e estou criando testes
+
+Preciso criar mais allguns testes unitário e integrações básicos que devem ser testados sempre que for feito alguma atualização no código
+
+Anexei todos os arquivos do código para lhe auxiliar no desenvolviemtno ddo código, forneça somente e tão somente os códigos dos testes prontos
+
+Anexei o POM.xml para você ter uma ideia das dependencias
+
+ */

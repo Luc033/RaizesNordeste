@@ -84,8 +84,6 @@ public class PagamentoService {
             throw new IllegalArgumentException("Não é possível registrar o retorno do pagamento. Status atual: " + pedido.getPagamento().getStatusPagamento() + "");
         }
 
-
-
         if(statusPagamento.equals(StatusPagamento.APROVADO)){
             pedido.getPagamento().setConfirmadoEm(LocalDateTime.now());
             pedido.getPagamento().setPayloadRetorno(request.toString());
@@ -95,9 +93,7 @@ public class PagamentoService {
         }else if(statusPagamento.equals(StatusPagamento.RECUSADO)){
             pedido.getPagamento().setConfirmadoEm(LocalDateTime.now());
             pedido.getPagamento().setPayloadRetorno(request.toString());
-
         }
-
     }
 
     /**

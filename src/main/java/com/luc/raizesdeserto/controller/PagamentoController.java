@@ -4,6 +4,7 @@ import com.luc.raizesdeserto.dto.pagamento.PagamentoMockRequest;
 import com.luc.raizesdeserto.service.PagamentoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class PagamentoController {
         this.pagamentoService = pagamentoService;
     }
 
+    @PreAuthorize( "hasRole('ROLE_ADMIN')")
     @PostMapping("mock/callback")
     public ResponseEntity<Void> processarRetornoPagamento(
             @Valid @RequestBody PagamentoMockRequest request
