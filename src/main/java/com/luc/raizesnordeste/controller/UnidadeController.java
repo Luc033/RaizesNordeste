@@ -47,7 +47,7 @@ public class UnidadeController {
                                               {
                                                 "id": "11b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
                                                 "ativa": true,
-                                                "nome": "Raízes do Deserto - Centro",
+                                                "nome": "Raízes do Nordeste - Centro",
                                                 "endereco": "Av. Paulista, 1000 - São Paulo, SP",
                                                 "tipoOperacao": "COZINHA_COMPLETA",
                                                 "horarioAbertura": "08:00:00",
@@ -56,7 +56,7 @@ public class UnidadeController {
                                               {
                                                 "id": "22c3d4e5-6f7a-4b8c-9d0e-1f2a3b4c5d6e",
                                                 "ativa": true,
-                                                "nome": "Raízes do Deserto - Shopping Sul",
+                                                "nome": "Raízes do Nordeste - Shopping Sul",
                                                 "endereco": "Rua das Flores, 250 - Curitiba, PR",
                                                 "tipoOperacao": "FORMATO_REDUZIDO",
                                                 "horarioAbertura": "10:00:00",
@@ -113,7 +113,7 @@ public class UnidadeController {
                                             {
                                               "id": "11b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
                                               "ativa": true,
-                                              "nome": "Raízes do Deserto - Centro",
+                                              "nome": "Raízes do Nordeste - Centro",
                                               "endereco": "Av. Paulista, 1000 - São Paulo, SP",
                                               "tipoOperacao": "COZINHA_COMPLETA",
                                               "horarioAbertura": "08:00:00",

@@ -243,7 +243,7 @@ public class AuthController {
                                             {
                                               "id": "1d4e6f72-3b5c-4a8d-9e0f-5a6b7c8d9e0f",
                                               "nome": "João Pereira",
-                                              "email": "joao.pereira@raizesdeserto.com"
+                                              "email": "joao.pereira@raizesnordeste.com"
                                             }
                                             """
                             )
@@ -332,7 +332,7 @@ public class AuthController {
                                     value = """
                                             {
                                               "error": "Conflict",
-                                              "message": "Email já existe: joao.pereira@raizesdeserto.com",
+                                              "message": "Email já existe: joao.pereira@raizesnordeste.com",
                                               "details": [],
                                               "timestamp": "2026-06-20T17:39:59.000",
                                               "path": "/auth/registrar-funcionario",
