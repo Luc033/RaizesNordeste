@@ -19,8 +19,7 @@ spring:
 gateway:
   pagamento:
     mock:
-      url-approved: "https://api.mocki.io/v2/didt58mc"
-      url-denied: ""
+      url: "https://api.mocki.io/v2/didt58mc"
 
 logging:
   file:

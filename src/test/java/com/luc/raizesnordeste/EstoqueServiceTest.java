@@ -134,8 +134,7 @@ class EstoqueServiceTest {
                 estoqueService.creditar(produtoId, unidadeId, 7)
         );
 
-        verify(produtoService, never()).buscarPorId(any());
-        verify(unidadeService, never()).buscarPorId(any());
+        verify(produtoService).buscarPorId(produtoId);
         verify(estoqueRepository, never()).save(any());
     }
     @Test

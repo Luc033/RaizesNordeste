@@ -19,7 +19,7 @@ public class GatewayPagamentoClient {
     private String url;
     private final ObjectMapper objectMapper;
 
-    public GatewayPagamentoClient(@Value("${gateway.pagamento.mock.url-approved}") String url,
+    public GatewayPagamentoClient(@Value("${gateway.pagamento.mock.url}") String url,
                                  ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         this.restClient = RestClient.builder().build();
