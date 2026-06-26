@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Filtro responsável por validar tokens JWT nas requisições e registrar
+ * a autenticação do usuário no contexto de segurança do Spring.
+ */
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
     private final TokenConfig tokenConfig;

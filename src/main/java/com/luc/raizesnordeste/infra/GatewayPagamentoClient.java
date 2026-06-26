@@ -10,39 +10,31 @@ import org.springframework.web.client.RestClient;
 
 
 /**
- * Cliente HTTP responsável pela integração com o gateway de pagamento mock.
- *
- * <p>Componente Spring que encapsula as chamadas ao serviço simulado de pagamento,
- * permitindo testar cenários de aprovação e recusa sem depender de uma integração real.
- * As URLs dos endpoints são configuradas via propriedades da aplicação.
+ * Integra a aplicação ao gateway de pagamento mock, enviando solicitações
+ * de pagamento de pedidos e extraindo o QR Code retornado pela simulação.
  */
 @Component
 public class GatewayPagamentoClient {
     private final RestClient restClient;
-    private String urlApproved;
-    private String urlDenied;
+    private String url;
     private final ObjectMapper objectMapper;
 
-    public GatewayPagamentoClient(@Value("${gateway.pagamento.mock.url-approved}") String urlApproved,
-                                  @Value("${gateway.pagamento.mock.url-denied}") String urlDenied, ObjectMapper objectMapper) {
+    public GatewayPagamentoClient(@Value("${gateway.pagamento.mock.url-approved}") String url,
+                                 ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         this.restClient = RestClient.builder().build();
-        this.urlApproved = urlApproved;
-        this.urlDenied = urlDenied;
+        this.url = url;
     }
 
+
     /**
-     * Envia uma solicitação de pagamento simulada para o gateway mock, permitindo
-     * testar cenários de aprovação e negação sem integração real.
+     * Simula a solicitação de pagamento de um pedido no gateway externo e extrai o QR Code
+     * retornado para continuidade do fluxo de pagamento. Garante que a resposta do gateway
+     * contenha um QR Code válido, impedindo que o pedido avance sem dados de pagamento.
      *
-     * <p>Seleciona a URL de destino com base no parâmetro {@code simularErro}:
-     * quando {@code true}, redireciona para o endpoint de negação; caso contrário,
-     * para o endpoint de aprovação. Qualquer falha de comunicação é encapsulada
-     * em uma {@link RuntimeException}.
-     *
-     * @param pedido pedido realizado
-     * @return resposta bruta do gateway mock como {@code String}
-     * @throws RuntimeException se ocorrer falha na comunicação com o gateway
+     * @param pedido pedido cujo identificador e valor total serão enviados ao gateway mock
+     * @return QR Code de pagamento retornado pelo gateway
+     * @throws RuntimeException quando o gateway não retorna um QR Code válido ou quando ocorre falha de comunicação/processamento da resposta
      */
     public String enviarSolicitacaoPagamentoMock(Pedido pedido) {
         String payloadRequest = String.format(
@@ -52,9 +44,8 @@ public class GatewayPagamentoClient {
         );
 
         try {
-            // Pega a resposta bruta
             String respostaJsonString = restClient.post()
-                    .uri(this.urlApproved)
+                    .uri(this.url)
                     .header("Content-Type", "application/json")
                     .body(payloadRequest)
                     .retrieve()
@@ -62,7 +53,6 @@ public class GatewayPagamentoClient {
 
             JsonNode rootNode = objectMapper.readTree(respostaJsonString);
 
-            // navega exatamente até o campo desejado
             String qrCodeExtraido = rootNode
                     .path("point_of_interaction")
                     .path("transaction_data")

@@ -8,7 +8,6 @@ import com.luc.raizesnordeste.domain.enums.Status;
 import com.luc.raizesnordeste.domain.enums.StatusPagamento;
 import com.luc.raizesnordeste.dto.pagamento.PagamentoMockRequest;
 import com.luc.raizesnordeste.repository.PagamentoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * Orquestra o fluxo de pagamento dos pedidos, incluindo solicitação mock,
+ * registro de retorno do gateway e tratamento de timeout com estorno de estoque.
+ */
 @Service
 public class PagamentoService {
 
@@ -32,15 +35,14 @@ public class PagamentoService {
     }
 
     /**
-     * Simula a solicitação de pagamento de um pedido junto a um gateway fictício (mock).
+     * Solicita um pagamento utilizando o gateway de pagamento mock para um pedido.
+     * Valida se o pedido está aguardando pagamento, registra os dados da solicitação
+     * e retorna um link fictício para simulação do fluxo de pagamento.
      *
-     * <p>Valida se o pedido existe e se está com o status {@code AGUARDANDO_PAGAMENTO} antes
-     * de registrar os dados do gateway e retornar um link de pagamento falso para fins de teste.
-     *
-     * @param pedido pedido a ser pago
-     * @return link fictício de pagamento gerado pelo mock do gateway
-     * @throws EntityNotFoundException  se nenhum pedido for encontrado com o {@code pedidoId} informado
-     * @throws IllegalArgumentException se o pedido existir, mas seu status não for {@code AGUARDANDO_PAGAMENTO}
+     * @param pedido Pedido para o qual será gerada a solicitação de pagamento.
+     * @return Link fictício utilizado para simular o redirecionamento ao gateway de pagamento.
+     * @throws IllegalArgumentException Se o pedido não estiver com o status
+     *                                  {@code AGUARDANDO_PAGAMENTO}.
      */
     @Transactional
     public String solicitarMock(Pedido pedido) {
@@ -63,16 +65,13 @@ public class PagamentoService {
 
 
     /**
-     * Registra o retorno de uma notificação de pagamento (webhook) para um pedido existente.
+     * Registra o retorno do gateway de pagamento mock para um pedido.
+     * Valida se o pagamento está pendente e atualiza o status do pagamento e do
+     * pedido conforme o resultado informado pelo gateway.
      *
-     * <p>Valida se o pedido existe e se o pagamento ainda está com status {@code PENDENTE}
-     * antes de processar o retorno. Caso o pagamento seja {@code APROVADO}, o pedido avança
-     * para o status {@code EM_PREPARO}. Caso seja {@code RECUSADO}, apenas o payload e a
-     * data de confirmação são registrados, sem alteração no status do pedido.
-     *
-     * @param request        do tipo PagamentoMockRequest.
-     * @throws IllegalArgumentException se o pedido não for encontrado ou se o pagamento
-     *                                  não estiver com status {@code PENDENTE}
+     * @param request Dados retornados pelo gateway de pagamento mock.
+     * @throws IllegalArgumentException Se o pagamento do pedido não estiver com o
+     *                                  status {@code PENDENTE}.
      */
     @Transactional
     public void registrarRetorno(PagamentoMockRequest request) {
@@ -97,21 +96,9 @@ public class PagamentoService {
     }
 
     /**
-     * Verifica e processa pedidos com timeout de pagamento.
-     *
-     * <p>Executado automaticamente a cada 10 segundos, este método busca todos os pedidos
-     * que ainda estão aguardando confirmação de pagamento e os cancela por inatividade.
-     * Para cada pedido afetado, o fluxo é:
-     * <ol>
-     *   <li>Atualiza o status do pedido para {@code CANCELADO}.</li>
-     *   <li>Marca o pagamento associado com {@code StatusPagamento.TIMEOUT}.</li>
-     *   <li>Estorna a quantidade de cada item de volta ao estoque da unidade de origem,
-     *       caso o registro de estoque correspondente exista.</li>
-     * </ol>
-     *
-     * <p>A operação inteira é executada dentro de uma transação ({@code @Transactional}),
-     * garantindo consistência entre o cancelamento do pedido, a atualização do pagamento
-     * e o crédito no estoque.
+     * Processa periodicamente, a cada 10 segundos, os pedidos que excederam o tempo
+     * limite de 10 minutos para pagamento. Cancela os pedidos pendentes, atualiza o
+     * status do pagamento para {@code TIMEOUT} e realiza a devolução dos itens ao estoque.
      */
     @Transactional
     @Scheduled(fixedDelay = 10000)

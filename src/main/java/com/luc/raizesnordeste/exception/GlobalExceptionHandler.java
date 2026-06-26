@@ -24,6 +24,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Centraliza o tratamento global de exceções da API, convertendo falhas
+ * em respostas HTTP padronizadas com mensagem, detalhes, caminho, timestamp e requestId.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,7 +39,6 @@ public class GlobalExceptionHandler {
     ){
         UUID requestId = UUID.randomUUID();
 
-        // ALTERADO: Texto corrigido para "Erro de validação" e nível alterado para WARN
         log.warn("Erro de validação - requestId: {} | path: {} | erros: {}",
                 requestId, request.getRequestURI(), ex.getBindingResult().getFieldErrors());
 

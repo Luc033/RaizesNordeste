@@ -6,6 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Integra a autenticação do Spring Security à base de usuários da aplicação,
+ * carregando credenciais a partir do e-mail informado no login.
+ */
 @Service
 public class AuthConfig implements UserDetailsService {
 

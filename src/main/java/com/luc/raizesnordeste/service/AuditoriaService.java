@@ -8,6 +8,11 @@ import com.luc.raizesnordeste.repository.LogStatusPedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+/**
+ * Centraliza o registro de auditoria das transições de status dos pedidos,
+ * garantindo rastreabilidade sobre alterações realizadas no ciclo de vida do pedido.
+ */
 @Service
 public class AuditoriaService {
 

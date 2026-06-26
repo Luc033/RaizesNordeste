@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Orquestra o ciclo de vida dos pedidos, validando regras de criação,
+ * estoque, integridade de preços, pagamento inicial e transições de status.
+ */
 @Service
 public class PedidoService {
 
@@ -36,25 +40,23 @@ public class PedidoService {
         this.auditoriaService = auditoriaService;
     }
 
+
     /**
-     * Cria e persiste um novo pedido após validar todas as regras de negócio envolvidas.
+     * Cria um novo pedido a partir das informações recebidas, aplicando as regras de negócio
+     * relacionadas a canal de venda, usuário, produtos, estoque, pagamento e auditoria.
      *
-     * <p>O processo de criação segue as seguintes etapas:
-     * <ol>
-     *   <li>Valida se o canal do pedido corresponde a um valor definido em {@link CanalPedido}.</li>
-     *   <li>Garante que a lista de itens não esteja vazia.</li>
-     *   <li>Valida se o usuário do pedido foi informado ou se existe.</li>
-     *   <li>Para cada item, verifica existência, status ativo e disponibilidade de estoque na unidade.</li>
-     *   <li>Aplica integridade de preço: o preço unitário utilizado é sempre o {@code precoBase}
-     *       cadastrado no banco, ignorando qualquer valor informado na requisição.</li>
-     *   <li>Persiste o pedido com status {@code AGUARDANDO_PAGAMENTO} e pagamento {@code PENDENTE}.</li>
-     * </ol>
+     * <p>Este método pertence à camada de Service e orquestra a criação completa do pedido:
+     * valida os dados informados, verifica a existência e disponibilidade dos produtos,
+     * debita o estoque, calcula o valor total, cria o pagamento pendente e registra a
+     * transição inicial de status para auditoria.</p>
      *
-     * @param novoPedido pedido recebido com canal, unidade, usuário, itens e forma de pagamento
-     * @return o {@link Pedido} salvo com identificador gerado, valor total calculado e status inicial definido
-     * @throws IllegalArgumentException se o canal for inválido, a lista de itens estiver vazia,
-     *                                  algum produto estiver inativo ou o estoque for insuficiente
-     * @throws EntityNotFoundException  se algum produto, usuário ou a combinação produto/unidade não for encontrada.
+     * @param novoPedido pedido contendo usuário, unidade, canal, itens e forma de pagamento informados.
+     * @return pedido salvo com status inicial {@link Status#AGUARDANDO_PAGAMENTO}, valor total calculado
+     *         e pagamento pendente associado.
+     * @throws IllegalArgumentException quando o canal do pedido é inválido, a lista de itens está vazia,
+     *                                  o usuário é inexistente ou inválido, ou algum produto está inativo.
+     * @throws EntityNotFoundException quando algum produto ou unidade informado não é encontrado.
+     * @throws IllegalStateException quando não há estoque suficiente para algum item do pedido.
      */
     @Transactional
     public Pedido criarPedido(Pedido novoPedido) {
@@ -126,22 +128,20 @@ public class PedidoService {
         }
     }
 
+
     /**
-     * Atualiza o status de um pedido, registrando a transição na auditoria.
+     * Atualiza o status de um pedido existente e registra a transição na auditoria.
      *
-     * <p>Valida se o novo status é um valor reconhecido do enum {@link Status} e,
-     * em seguida, persiste a mudança. Cada transição é registrada via
-     * {@code AuditoriaService} antes da atualização, garantindo rastreabilidade
-     * das alterações.</p>
+     * <p>Este método pertence à camada de Service e aplica a regra de mudança de status
+     * do pedido, validando o novo status informado, buscando o pedido correspondente e
+     * salvando a alteração após o registro da auditoria.</p>
      *
-     * @param usuario  Usuário responsável pela alteração
-     * @param pedidoId   identificador do pedido a ser atualizado
-     * @param novoStatus novo status a ser aplicado ao pedido
-     * @param observacao comentário opcional justificando a mudança de status
-     * @return o {@link Pedido} atualizado após a persistência
-     * @throws EntityNotFoundException se {@code novoStatus} não for um valor válido
-     *                                 do enum {@link Status}, ou se o pedido
-     *                                 correspondente a {@code pedidoId} não for encontrado
+     * @param usuario usuário responsável pela alteração de status.
+     * @param pedidoId identificador do pedido que terá o status atualizado.
+     * @param novoStatus novo status que será aplicado ao pedido.
+     * @param observacao observação opcional relacionada à alteração de status.
+     * @return pedido atualizado e salvo com o novo status.
+     * @throws EntityNotFoundException quando o novo status informado é inválido ou quando o pedido não é encontrado.
      */
     @Transactional
     public Pedido atualizarStatus(Usuario usuario, UUID pedidoId, Status novoStatus, String observacao){
@@ -159,14 +159,42 @@ public class PedidoService {
         }
     }
 
+
+    /**
+     * Busca um pedido pelo seu identificador único.
+     *
+     * <p>Este método pertence à camada de Service e centraliza a recuperação de um pedido,
+     * lançando exceção caso o registro não exista na base de dados.</p>
+     *
+     * @param id identificador único do pedido.
+     * @return pedido encontrado.
+     * @throws EntityNotFoundException quando nenhum pedido é encontrado para o identificador informado.
+     */
     public Pedido buscarPorId(UUID id){
         return pedidoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado: " + id));
     }
 
+    /**
+     * Lista pedidos que permanecem aguardando pagamento há mais de dez minutos.
+     *
+     * <p>Este método pertence à camada de Service e apoia a regra de controle de pedidos
+     * pendentes, permitindo identificar pedidos antigos que ainda não tiveram pagamento confirmado.</p>
+     *
+     * @return lista de pedidos com status {@link Status#AGUARDANDO_PAGAMENTO} criados há mais de dez minutos.
+     */
     public List<Pedido> listarPedidosAguardandoPagamento(){
         return pedidoRepository.findByStatusAndCriadoEmIsBefore(Status.AGUARDANDO_PAGAMENTO, LocalDateTime.now().minusMinutes(10));
     }
 
+    /**
+     * Lista os pedidos registrados em um canal de venda específico.
+     *
+     * <p>Este método pertence à camada de Service e permite consultar pedidos conforme
+     * o canal utilizado na criação, como atendimento presencial, aplicativo ou outro canal suportado.</p>
+     *
+     * @param canal canal de venda utilizado para filtrar os pedidos.
+     * @return lista de pedidos associados ao canal informado.
+     */
     public List<Pedido> listarPedidosPorCanal(CanalPedido canal){
         return pedidoRepository.findByCanalPedido(canal);
     }

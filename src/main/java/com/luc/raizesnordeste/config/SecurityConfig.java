@@ -27,6 +27,10 @@ public class SecurityConfig {
     }
 
 
+    /**
+     * Configura a segurança da aplicação, definindo autenticação stateless,
+     * rotas públicas, proteção por JWT e beans essenciais do Spring Security.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
