@@ -3,8 +3,8 @@ spring:
     name: RaizesNordeste
   datasource:
     url: jdbc:postgresql://0.0.0.0:5433/db_raizes_nordeste?sslmode=disable
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    username: admin
+    password: password
   jpa:
     properties:
       hibernate:

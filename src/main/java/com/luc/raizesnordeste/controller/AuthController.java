@@ -230,6 +230,25 @@ public class AuthController {
             summary = "Registra um novo usuário funcionário",
             description = "Cria um novo usuário com a role informada na requisição (RegisterRequest), criptografa a senha (PasswordEncoder) e registra o consentimento LGPD a partir dos dados da requisição HTTP. Acesso restrito a usuários autenticados com role ADMIN (@PreAuthorize)."
     )
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Dados para cadastro do funcionário.",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = RegisterRequest.class),
+                    examples = @ExampleObject(
+                            name = "Exemplo de requisição",
+                            value = """
+            {
+              "nome": "João da Silva",
+              "email": "joao.silva@empresa.com",
+              "senha": "Senha@123",
+              "role": "ROLE_ATENDENTE"
+            }
+            """
+                    )
+            )
+    )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "201",

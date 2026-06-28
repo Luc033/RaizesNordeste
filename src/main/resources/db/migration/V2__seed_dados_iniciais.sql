@@ -3,7 +3,7 @@
 INSERT INTO usuario (id, nome, email, senha_hash, role, ativo)
 VALUES ('224dae12-6cd3-4d94-9621-241c6e5e0e59',
         'Administrador',
-        'admin@raizesdodeserto.com',
+        'admin@raizesdonordeste.com',
         '$2a$10$8dXJPpsS4s2g4uaMStR41.GqeHc4aYUPb6nad7npO.VAgVlYcEg3O',
         'ROLE_ADMIN',
         TRUE);
@@ -11,7 +11,7 @@ VALUES ('224dae12-6cd3-4d94-9621-241c6e5e0e59',
 -- 2. Criação da Unidade FÍSICA
 INSERT INTO unidade (id, nome, endereco, tipo_operacao, ativa, horario_abertura, horario_fechamento)
 VALUES ('bf6d0317-2dd8-4d5e-9a79-171bb2330065',
-        'Raízes do Deserto - Centro',
+        'Raízes do Nordeste - Centro',
         'Av. Central, 1000 - Curitiba/PR',
         'COZINHA_COMPLETA',
         TRUE,
