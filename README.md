@@ -1,6 +1,6 @@
 # Raízes do Nordeste — Back-End
 
-API REST desenvolvida para apoiar o fluxo operacional da rede de lanchonetes “Raízes do Nordeste”. A aplicação contempla cadastro e autenticação de usuários, autorização por perfis, controle de estoque por unidade, gestão de pedidos, registro do canal de origem do pedido, integração simulada com gateway de pagamento e documentação via Swagger/OpenAPI.
+API REST desenvolvida para apoiar o fluxo operacional da rede de restaurantes “Raízes do Nordeste”. A aplicação contempla cadastro e autenticação de usuários, autorização por perfis, controle de estoque por unidade, gestão de pedidos, registro do canal de origem do pedido, integração simulada com gateway de pagamento e documentação via Swagger/OpenAPI.
 
 ## Links e evidências
 
@@ -46,7 +46,7 @@ Para executar o projeto localmente, é necessário possuir:
 ### 1. Clonar o repositório
 
 ```bash
-git clone INSERIR_LINK_DO_REPOSITORIO
+git clone https://github.com/Luc033/RaizesNordeste
 cd RaizesNordeste
 ```
 
@@ -55,11 +55,11 @@ cd RaizesNordeste
 Execute o comando abaixo para criar e iniciar o container do PostgreSQL:
 
 ```bash
-docker run --name postgres-raizes \
-  -e POSTGRES_USER=admin \
-  -e POSTGRES_PASSWORD=password \
-  -e POSTGRES_DB=db_raizes_nordeste \
-  -p 5433:5432 \
+docker run --name postgres-raizes 
+  -e POSTGRES_USER=admin 
+  -e POSTGRES_PASSWORD=password 
+  -e POSTGRES_DB=db_raizes_nordeste 
+  -p 5433:5432 
   -d postgres:15-alpine
 ```
 
@@ -81,23 +81,31 @@ Configuração utilizada para execução local:
 
 ```yaml
 spring:
+  application:
+    name: RaizesNordeste
   datasource:
-    url: jdbc:postgresql://localhost:5433/db_raizes_nordeste
+    url: jdbc:postgresql://0.0.0.0:5433/db_raizes_nordeste?sslmode=disable
     username: admin
     password: password
-    driver-class-name: org.postgresql.Driver
-
   jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
     show-sql: true
-
   flyway:
     enabled: true
     baseline-on-migrate: true
 
-server:
-  port: 8080
+gateway:
+  pagamento:
+    mock:
+      url: "https://api.mocki.io/v2/didt58mc"
+
+logging:
+  file:
+    name: "raizes-nordeste.log"
 ```
 
 As credenciais acima são destinadas exclusivamente ao ambiente local de desenvolvimento e testes acadêmicos.
