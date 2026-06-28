@@ -104,6 +104,7 @@ public class EstoqueController {
                     )
             )
     })
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_GERENTE', 'ROLE_COZINHA')")
     @GetMapping()
     public ResponseEntity<List<EstoqueResponse>> listarEstoquePorUnidade(@RequestParam UUID unidadeId) {
         var estoque = estoqueService.consultarPorUnidade(unidadeId).stream().map(e -> new EstoqueResponse(e)).toList();
