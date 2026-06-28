@@ -1,0 +1,1952 @@
+{
+  "info": {
+    "_postman_id": "c280c563-471c-454e-bf6f-cb1fc69be107",
+    "name": "Raizes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43736389",
+    "_collection_link": "https://go.postman.co/collection/43736389-c280c563-471c-454e-bf6f-cb1fc69be107?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Produtos",
+      "item": [
+        {
+          "name": "Buscar um produto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}/produtos/86c16d3c-cdf4-447a-aa14-bf201bca12fd",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "produtos",
+                "86c16d3c-cdf4-447a-aa14-bf201bca12fd"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Buscar um produto",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}/produtos/86c16d3c-cdf4-447a-aa14-bf201bca12fd",
+                  "host": [
+                    "{{localhost}}"
+                  ],
+                  "path": [
+                    "produtos",
+                    "86c16d3c-cdf4-447a-aa14-bf201bca12fd"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-XSS-Protection",
+                  "value": "0"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "Pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "Expires",
+                  "value": "0"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 25 Jun 2026 10:35:50 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\n    \"ativo\": true,\n    \"nome\": \"Falafel Artesanal (Porção)\",\n    \"descricao\": \"Deliciosos bolinhos de grão-de-bico com especiarias árabes.\",\n    \"precoBase\": 25.5,\n    \"categoria\": \"ENTRADAS\",\n    \"sazonal\": false\n}"
+            }
+          ]
+        },
+        {
+          "name": "Buscar um produtos de uma unidade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}/unidades/bf6d0317-2dd8-4d5e-9a79-171bb2330065/produtos",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "unidades",
+                "bf6d0317-2dd8-4d5e-9a79-171bb2330065",
+                "produtos"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Buscar um produtos de um unidade",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}/unidades/bf6d0317-2dd8-4d5e-9a79-171bb2330065/produtos",
+                  "host": [
+                    "{{localhost}}"
+                  ],
+                  "path": [
+                    "unidades",
+                    "bf6d0317-2dd8-4d5e-9a79-171bb2330065",
+                    "produtos"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-XSS-Protection",
+                  "value": "0"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "Pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "Expires",
+                  "value": "0"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 25 Jun 2026 10:38:31 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "[\n    {\n        \"id\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\n        \"ativo\": true,\n        \"nome\": \"Falafel Artesanal (Porção)\",\n        \"descricao\": \"Deliciosos bolinhos de grão-de-bico com especiarias árabes.\",\n        \"precoBase\": 25.5,\n        \"categoria\": \"ENTRADAS\",\n        \"sazonal\": false\n    },\n    {\n        \"id\": \"d6bc413c-efb8-4786-9247-94259ae38cc1\",\n        \"ativo\": true,\n        \"nome\": \"Kibe Assado Especial\",\n        \"descricao\": \"Kibe tradicional assado no forno a lenha, recheado com coalhada.\",\n        \"precoBase\": 45,\n        \"categoria\": \"PRATOS PRINCIPAIS\",\n        \"sazonal\": false\n    }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Unidades",
+      "item": [
+        {
+          "name": "Buscar uma unidade",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{localhost}}/unidades/bf6d0317-2dd8-4d5e-9a79-171bb2330065",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "unidades",
+                "bf6d0317-2dd8-4d5e-9a79-171bb2330065"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Buscar uma unidade",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": {\r\n        \"produtoId\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\r\n        \"quantidade\":5\r\n    },\r\n    \"formaPagamento\": \"PIX\"\r\n}"
+                },
+                "url": {
+                  "raw": "{{localhost}}/unidades/bf6d0317-2dd8-4d5e-9a79-171bb2330065",
+                  "host": [
+                    "{{localhost}}"
+                  ],
+                  "path": [
+                    "unidades",
+                    "bf6d0317-2dd8-4d5e-9a79-171bb2330065"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-XSS-Protection",
+                  "value": "0"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "Pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "Expires",
+                  "value": "0"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 25 Jun 2026 10:36:59 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\n    \"ativa\": true,\n    \"nome\": \"Raízes do Nordeste - Centro\",\n    \"endereco\": \"Av. Central, 1000 - Curitiba/PR\",\n    \"tipoOperacao\": \"COZINHA_COMPLETA\",\n    \"horarioAbertura\": \"11:00:00\",\n    \"horarioFechamento\": \"23:00:00\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Login admin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "const token = response.token;\r",
+              "pm.environment.set(\"token_adm\", token)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\":\"admin@raizesdonordeste.com\",\r\n    \"senha\":\"12345678\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/auth/login",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Login admin",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\":\"admin@raizesdonordeste.com\",\r\n    \"senha\":\"12345678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/auth/login",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Sun, 28 Jun 2026 22:27:39 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiIyMjRkYWUxMi02Y2QzLTRkOTQtOTYyMS0yNDFjNmU1ZTBlNTkiLCJyb2xlIjoiUk9MRV9BRE1JTiIsInN1YiI6ImFkbWluQHJhaXplc2Rvbm9yZGVzdGUuY29tIiwiZXhwIjoxNzgyNzcyMDU5LCJpYXQiOjE3ODI2ODU2NTl9.8TXIb4yXPE83tgQ_R5DRmbATP7HlGle5wIFePw2w3W0\",\n    \"expiresIn\": 86400\n}"
+        }
+      ]
+    },
+    {
+      "name": "01 - Falta Aceite Termos",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\":\"Cliente Teste\",\r\n    \"email\":\"cliente123@email.com\",\r\n    \"senha\":\"12345678\", \r\n    \"aceitouTermos\":false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/auth/registrar-cliente",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "auth",
+            "registrar-cliente"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "01 - Falta Aceite Termos",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\":\"Cliente Teste\",\r\n    \"email\":\"cliente123@email.com\",\r\n    \"senha\":\"12345678\", \r\n    \"aceitouTermos\":false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/auth/registrar-cliente",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "auth",
+                "registrar-cliente"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 12 Jun 2026 11:55:27 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"error\": \"Bad Request\",\n    \"message\": \"Erro na validação dos campos da requisição.\",\n    \"details\": [\n        {\n            \"field\": \"aceitouTermos\",\n            \"issue\": \"Aceite de termos é obrigatório\"\n        }\n    ],\n    \"timestamp\": \"2026-06-12T08:55:27.7267364\",\n    \"path\": \"/auth/registrar-cliente\",\n    \"requestId\": \"92c944a1-5dc7-445c-b72c-c9b7b1ed47a9\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "02 - Criar Cliente Válido",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Cliente Teste\",\r\n    \"email\": \"cliente123@email.com\",\r\n    \"senha\": \"12345678\",\r\n    \"aceitouTermos\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/auth/registrar-cliente",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "auth",
+            "registrar-cliente"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "02 - Criar Cliente Válido",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Cliente Teste\",\r\n    \"email\": \"cliente123@email.com\",\r\n    \"senha\": \"12345678\",\r\n    \"aceitouTermos\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/auth/registrar-cliente",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "auth",
+                "registrar-cliente"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 13 Jun 2026 15:04:18 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": \"c5e3868c-511f-46e7-b924-1588c3741d1b\",\n    \"nome\": \"Cliente Teste\",\n    \"email\": \"cliente123@email.com\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "03 - Login do cliente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "const token = response.token;\r",
+              "pm.environment.set(\"token_cliente\", token)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\":\"cliente123@email.com\",\r\n    \"senha\":\"12345678\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/auth/login",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "03 - Login do cliente",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\":\"cliente123@email.com\",\r\n    \"senha\":\"12345678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/auth/login",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 13 Jun 2026 15:04:48 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiJjNWUzODY4Yy01MTFmLTQ2ZTctYjkyNC0xNTg4YzM3NDFkMWIiLCJyb2xlIjoiUk9MRV9DTElFTlRFIiwic3ViIjoiY2xpZW50ZTEyM0BlbWFpbC5jb20iLCJleHAiOjE3ODE0NDk0ODgsImlhdCI6MTc4MTM2MzA4OH0.-9StBBvl770OPbp96g8vVD1utFxLgrjo2g26QcTNfVs\",\n    \"expiresIn\": 86400\n}"
+        }
+      ]
+    },
+    {
+      "name": "04 - Admin Cria Cozinha",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiJhMTkwMWI5Ni1mODliLTRmNzctOGI0Yi04MGZjZTYyZmVmZTciLCJyb2xlIjoiUk9MRV9DTElFTlRFIiwic3ViIjoiY2xpZW50ZUBlbWFpbC5jb20iLCJleHAiOjE3ODAyMDM1OTIsImlhdCI6MTc4MDE3NTU5Mn0.tu_t6LY3VFBKGIIMXA9jRpAwfgH5ny1qT8QFpEz7aY0",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\":\"Cozinha 1\",\r\n    \"email\":\"cozinha1.curitiba@raizesdonordeste.com\",\r\n    \"senha\":\"12345678\",\r\n    \"role\":\"ROLE_COZINHA\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/auth/registrar-funcionario",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "auth",
+            "registrar-funcionario"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "04 - Admin Cria Cozinha",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiJhMTkwMWI5Ni1mODliLTRmNzctOGI0Yi04MGZjZTYyZmVmZTciLCJyb2xlIjoiUk9MRV9DTElFTlRFIiwic3ViIjoiY2xpZW50ZUBlbWFpbC5jb20iLCJleHAiOjE3ODAyMDM1OTIsImlhdCI6MTc4MDE3NTU5Mn0.tu_t6LY3VFBKGIIMXA9jRpAwfgH5ny1qT8QFpEz7aY0",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\":\"Cozinha 1\",\r\n    \"email\":\"cozinha1.curitiba@raizesdonordeste.com\",\r\n    \"senha\":\"12345678\",\r\n    \"role\":\"ROLE_COZINHA\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/auth/registrar-funcionario",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "auth",
+                "registrar-funcionario"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Sun, 28 Jun 2026 22:33:41 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": \"3afa5c1b-d231-41ec-b122-6dd2a6cfab70\",\n    \"nome\": \"Cozinha 1\",\n    \"email\": \"cozinha1.curitiba@raizesdonordeste.com\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "05 - Criar Pedido sem Token",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": {\r\n        \"produtoId\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\r\n        \"quantidade\":5\r\n    },\r\n    \"formaPagamento\": \"PIX\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/pedidos",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "pedidos"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "05 - Criar Pedido sem Token",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": {\r\n        \"produtoId\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\r\n        \"quantidade\":5\r\n    },\r\n    \"formaPagamento\": \"PIX\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/pedidos",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Sun, 14 Jun 2026 16:15:42 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"timestamp\": \"2026-06-14T16:15:42.572Z\",\n    \"status\": 403,\n    \"error\": \"Forbidden\",\n    \"message\": \"Forbidden\",\n    \"path\": \"/pedidos\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "06 - Erro Produto Falso",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_cliente}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": [\r\n        {\r\n            \"produtoId\": \"c6c2545b-0db7-4358-83a7-8dc4b35e5971\",\r\n            \"quantidade\": 5\r\n        }\r\n    ],\r\n    \"formaPagamento\": \"PIX\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/pedidos",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "pedidos"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "06 - Erro Produto Falso",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": {\r\n        \"produtoId\": \"UUID-FALSO\",\r\n        \"quantidade\":5\r\n    },\r\n    \"formaPagamento\": \"PIX\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/pedidos",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Sun, 14 Jun 2026 16:16:41 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"error\": \"Bad Request\",\n    \"message\": \"O corpo da requisição está ausente ou o formato do JSON enviado é inválido.\",\n    \"details\": [],\n    \"timestamp\": \"2026-06-14T13:16:41.4296215\",\n    \"path\": \"/pedidos\",\n    \"requestId\": \"a945a850-d920-4bf4-909e-b3d3528faa03\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "07 - Erro Falta Estoque",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_cliente}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": [\r\n        {\r\n            \"produtoId\": \"d6bc413c-efb8-4786-9247-94259ae38cc1\",\r\n            \"quantidade\": 999\r\n        }\r\n    ],\r\n        \"formaPagamento\": \"PIX\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/pedidos",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "pedidos"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "07 - Erro Falta Estoque",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": [\r\n        {\r\n            \"produtoId\": \"d6bc413c-efb8-4786-9247-94259ae38cc1\",\r\n            \"quantidade\": 999\r\n        }\r\n    ],\r\n        \"formaPagamento\": \"PIX\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/pedidos",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "status": "Conflict",
+          "code": 409,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Sun, 28 Jun 2026 22:27:49 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"details\": [],\n    \"error\": \"Conflict\",\n    \"message\": \"Estoque insuficiente no item [1]: Kibe Assado Especial (d6bc413c-efb8-4786-9247-94259ae38cc1) - Qtd pedida: 999\",\n    \"path\": \"/pedidos\",\n    \"requestId\": \"a1600e0d-24c1-494b-a61d-ca0c41691586\",\n    \"timestamp\": \"2026-06-28T19:27:49.6469464\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "08 - Criar Pedido Sucesso",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_cliente}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": [\r\n        {\r\n            \"produtoId\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\r\n            \"quantidade\": 3\r\n        }\r\n    ],\r\n    \"formaPagamento\": \"PIX\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/pedidos",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "pedidos"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "08 - Criar Pedido Sucesso",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"unidadeId\": \"bf6d0317-2dd8-4d5e-9a79-171bb2330065\",\r\n    \"canalPedido\": \"WEB\",\r\n    \"itens\": [\r\n        {\r\n            \"produtoId\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\r\n            \"quantidade\": 3\r\n        }\r\n    ],\r\n    \"formaPagamento\": \"PIX\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/pedidos",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 16 Jun 2026 22:55:21 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"pedidoId\": \"2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5\",\n    \"status\": \"AGUARDANDO_PAGAMENTO\",\n    \"canal\": \"WEB\",\n    \"valorTotal\": 76.5,\n    \"itens\": [\n        {\n            \"produtoID\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\n            \"nome\": \"Falafel Artesanal (Porção)\",\n            \"quantidade\": 3,\n            \"valorUnitario\": 25.5\n        }\n    ],\n    \"infoPagamento\": \"00020101021126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-426614174000520400005303986540576.505802BR5917Raizes do Nordeste6008Curitiba62070503***6304E4A2\",\n    \"criadoEm\": \"2026-06-16T19:55:19.6702428\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "09 - Pagamento Recusado",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_adm}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"pedidoId\":\"2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5\",\r\n        \"statusPagamento\":\"RECUSADO\",\r\n        \"dateCreated\": \"2026-06-16T19:56:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/pagamentos/mock/callback",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "pagamentos",
+            "mock",
+            "callback"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "09 - Pagamento Recusado",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"pedidoId\":\"2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5\",\r\n        \"statusPagamento\":\"RECUSADO\",\r\n        \"dateCreated\": \"2026-06-16T19:56:00Z\"\r\n\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/pagamentos/mock/callback",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "pagamentos",
+                "mock",
+                "callback"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "",
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 17 Jun 2026 23:04:50 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [
+            {
+              "expires": "Invalid Date",
+              "domain": "",
+              "path": ""
+            }
+          ],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "10 - Pagamento Aprovado",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_adm}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"pedidoId\": \"2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5\",\r\n    \"statusPagamento\": \"APROVADO\",\r\n    \"dateCreated\": \"2026-06-16T19:56:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/pagamentos/mock/callback",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "pagamentos",
+            "mock",
+            "callback"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "09 - Pagamento Aprovado",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"pedidoId\": \"2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5\",\r\n    \"statusPagamento\": \"APROVADO\",\r\n    \"dateCreated\": \"2026-06-16T19:56:00Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/pagamentos/mock/callback",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "pagamentos",
+                "mock",
+                "callback"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 16 Jun 2026 23:02:18 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "11 - Cliente muda status",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_cliente}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n        \"status\":\"PRONTO\",\r\n        \"observacao\":\"Pedido preparado com sucesso.\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/pedidos/2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5/status",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "pedidos",
+            "2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5",
+            "status"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "10 - Cliente muda status",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"status\":\"EM_PREPARO\",\r\n        \"observacao\":\"Pedido preparado com sucesso.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/pedidos/2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5/status",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "pedidos",
+                "2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5",
+                "status"
+              ]
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 16 Jun 2026 23:14:19 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"error\": \"Forbidden\",\n    \"message\": \"Você não tem permissão para acessar este recurso.\",\n    \"details\": [],\n    \"timestamp\": \"2026-06-16T20:14:19.7014151\",\n    \"path\": \"/pedidos/2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5/status\",\n    \"requestId\": \"1b695a92-6b00-4fdc-bd02-fa89508d87dc\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "12 - Login do func. cozinha",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "const token = response.token;\r",
+              "pm.environment.set(\"token_cozinha\", token)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\":\"cozinha1.curitiba@raizesdonordeste.com\",\r\n    \"senha\":\"12345678\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/auth/login",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "12 - Login do func. cozinha",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\":\"cozinha1.curitiba@raizesdonordeste.com\",\r\n    \"senha\":\"12345678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/auth/login",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Sun, 28 Jun 2026 22:29:23 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiJlYjJlZWJlNi1kZjFlLTQ1YmMtOTdmYy04Zjg0YTNkZGYwZTEiLCJyb2xlIjoiUk9MRV9DT1pJTkhBIiwic3ViIjoiY296aW5oYTEuY3VyaXRpYmFAcmFpemVzZG9ub3JkZXN0ZS5jb20iLCJleHAiOjE3ODI3NzIxNjMsImlhdCI6MTc4MjY4NTc2M30.YTZmjHdxYEls54CNemteqSqZaGiaROHeL7svhhwOi9g\",\n    \"expiresIn\": 86400\n}"
+        }
+      ]
+    },
+    {
+      "name": "13 - Cozinha muda status",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_cozinha}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n        \"status\":\"PRONTO\",\r\n        \"observacao\":\"Pedido preparado com sucesso.\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{localhost}}/pedidos/2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5/status",
+          "host": [
+            "{{localhost}}"
+          ],
+          "path": [
+            "pedidos",
+            "2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5",
+            "status"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "12 - Cozinha muda status",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"status\":\"PRONTO\",\r\n        \"observacao\":\"Pedido preparado com sucesso.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/pedidos/2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5/status",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "pedidos",
+                "2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5",
+                "status"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 16 Jun 2026 23:17:34 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"pedidoId\": \"2f5fff7b-94f6-4c28-9110-cb7a8cb1c1c5\",\n    \"status\": \"PRONTO\",\n    \"canal\": \"WEB\",\n    \"valorTotal\": 76.5,\n    \"itens\": [\n        {\n            \"produtoID\": \"86c16d3c-cdf4-447a-aa14-bf201bca12fd\",\n            \"nome\": \"Falafel Artesanal (Porção)\",\n            \"quantidade\": 3,\n            \"valorUnitario\": 25.5\n        }\n    ],\n    \"criadoEm\": \"2026-06-16T19:55:19.670243\"\n}"
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token_adm}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token_adm",
+      "value": "",
+      "description": "Raízes"
+    },
+    {
+      "key": "token_cliente",
+      "value": ""
+    },
+    {
+      "key": "token_cozinha",
+      "value": ""
+    }
+  ]
+}
